@@ -13,14 +13,16 @@ public class Config {
     public String mysql_host;
     public String mysql_password;
     public String mysql_database;
+    public String topgg_token;
 
     public Config() {
-        this.token = "<put your token here>";
+        this.token = "TOKEN";
         this.prefix = "/";
-        this.mysql_username = "<MySQL Username here>";
+        this.mysql_username = "MySQL USERNAME";
         this.mysql_host = "localhost";
-        this.mysql_password = "<MySQL Password here>";
-        this.mysql_database = "<MySQL Database here>";
+        this.mysql_password = "MySQL PASSWORD";
+        this.mysql_database = "MySQL DATABASE";
+        this.topgg_token = "TOPGG_TOKEN";
     }
 
     private static Config instance;

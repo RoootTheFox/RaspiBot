@@ -36,6 +36,7 @@ public class EventManager {
             }
         }
     }
+
     public static int getEventCount() {
         return eventcount;
     }

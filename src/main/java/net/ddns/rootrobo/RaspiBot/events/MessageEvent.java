@@ -49,7 +49,7 @@ public class MessageEvent extends ListenerAdapter {
                 if(!(permission == null)) {
                     if(member == null) return; // just to be safe
                     if(!member.hasPermission(permission)) {
-                        event.getTextChannel().sendMessage(EmbedUtils.getNoPermissionEmbed(event.getMessage(), permission)).complete();
+                        event.getTextChannel().sendMessage(EmbedUtils.getNoPermissionEmbed(member.getUser(), permission)).complete();
                         Main.LOGGER.info(LogFormatter.ANSI_YELLOW+event.getMessage().getAuthor().getAsTag() + " lacked the permission "+LogFormatter.ANSI_CYAN+permission.name()+LogFormatter.ANSI_YELLOW+" to run "+command);
                         return;
                     }

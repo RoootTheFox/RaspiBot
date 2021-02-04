@@ -42,6 +42,8 @@ public class GlobalChat {
                             AvatarURL = msg.getAuthor().getAvatarUrl();
                             if (AvatarURL == null) {
                                 AvatarURL = msg.getAuthor().getDefaultAvatarUrl();
+                            } else {
+                                AvatarURL = AvatarURL+"?size=512"; // better quality
                             }
                         } else {
                             AvatarURL = Main.bot.getSelfUser().getAvatarUrl();

@@ -2,6 +2,7 @@ package net.ddns.rootrobo.RaspiBot.events;
 
 import net.ddns.rootrobo.RaspiBot.Main;
 import net.ddns.rootrobo.RaspiBot.mysql.DataSource;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -29,7 +30,10 @@ public class GuildMemberLeaveEvent extends ListenerAdapter {
                             .replace("{server}", event.getGuild().getName())
                             .replace("{members}", String.valueOf(event.getGuild().getMemberCount()))
                             .replace("{user}", Objects.requireNonNull(event.getMember()).getUser().getAsMention());
-                    Objects.requireNonNull(Main.bot.getTextChannelById(leaveChannelID)).sendMessage(leave_msg).complete();
+                    TextChannel channel = Main.bot.getTextChannelById(leaveChannelID);
+                    if(channel != null) {
+                        channel.sendMessage(leave_msg).complete();
+                    }
                 }
             }
         } catch (SQLException ignored) {

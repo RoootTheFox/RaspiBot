@@ -2,14 +2,13 @@ package net.ddns.rootrobo.RaspiBot.events;
 
 import net.ddns.rootrobo.RaspiBot.Main;
 import net.ddns.rootrobo.RaspiBot.mysql.DataSource;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
 
 @SuppressWarnings("unused")
 public class GuildMemberJoinEvent extends ListenerAdapter {
@@ -28,7 +27,10 @@ public class GuildMemberJoinEvent extends ListenerAdapter {
                             .replace("{server}", event.getGuild().getName())
                             .replace("{user}", event.getMember().getUser().getAsMention())
                             .replace("{members}", String.valueOf(event.getGuild().getMemberCount()));
-                    Objects.requireNonNull(Main.bot.getTextChannelById(welcomeChannelID)).sendMessage(welcome_msg).complete();
+                    TextChannel channel = Main.bot.getTextChannelById(welcomeChannelID);
+                    if(channel != null) {
+                        channel.sendMessage(welcome_msg).complete();
+                    }
                 }
             }
         } catch (SQLException ignored) {

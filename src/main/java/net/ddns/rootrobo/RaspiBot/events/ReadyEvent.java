@@ -5,7 +5,6 @@ import net.ddns.rootrobo.RaspiBot.log.LogFormatter;
 import net.ddns.rootrobo.RaspiBot.stuff.DynamicActivity;
 import net.ddns.rootrobo.RaspiBot.utils.EmbedUtils;
 import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nonnull;
@@ -35,5 +34,8 @@ public class ReadyEvent extends ListenerAdapter {
         Main.bot.getPresence().setStatus(OnlineStatus.ONLINE);
 
         DynamicActivity.start();
+
+        // (debug) uncomment to get a list of guilds
+        //for (Guild guild : Main.bot.getGuilds()) { System.out.println("M:"+guild.getMemberCount()+" N:"+guild.getName()+" I:"+guild.getId()); }
     }
 }

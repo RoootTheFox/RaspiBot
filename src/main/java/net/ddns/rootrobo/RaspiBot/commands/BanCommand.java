@@ -30,7 +30,7 @@ public class BanCommand implements Command {
         }
 
         if(!guild.getSelfMember().canInteract(target)) {
-            msg.getChannel().sendMessage(EmbedUtils.getSelfNoPermissionEmbed(msg, "to ban that user!")).complete();
+            msg.getChannel().sendMessage(EmbedUtils.getSelfNoPermissionEmbed(msg.getAuthor(), "to ban that user!")).complete();
         } else {
             if(!Objects.requireNonNull(msg.getMember()).canInteract(target)) {
                 Message errorMSG = new MessageBuilder().setEmbed(new EmbedBuilder()

@@ -7,19 +7,19 @@ import net.ddns.rootrobo.RaspiBot.console.Console;
 import net.ddns.rootrobo.RaspiBot.log.LogFormatter;
 import net.ddns.rootrobo.RaspiBot.mysql.DataSource;
 import net.ddns.rootrobo.RaspiBot.stuff.*;
+import net.ddns.rootrobo.RaspiBot.utils.Utils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import org.discordbots.api.client.DiscordBotListAPI;
 
 import javax.security.auth.login.LoginException;
 import java.io.*;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.EnumSet;
-import java.util.jar.JarFile;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
 
@@ -39,6 +39,8 @@ public class Main {
     public static String MYSQL_DB = "";
 
     public static boolean READY = false;
+    public static boolean USE_DBL = false;
+    public static DiscordBotListAPI dbl_api;
 
     protected static Config config = new Config();
 
@@ -52,17 +54,12 @@ public class Main {
         LOGGER.addHandler(handler);
 
         // read stuff from Bot JAR
-        String jarPath = "RaspiBot.jar";
-        try {
-            jarPath = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
 
-        try {
-            JarFile jar = new JarFile(jarPath);
-            InputStream botJsonStream = jar.getInputStream(jar.getEntry("raspibot.json"));
-
+        InputStream botJsonStream = Utils.getInputStreamFromBotJar("raspibot.json");
+        if(botJsonStream == null) {
+            LOGGER.severe("Could NOT load bot Json!");
+            LOGGER.info("Starting RaspiBot v"+VERSION.getVersionString());
+        } else {
             BufferedReader rd;
             StringBuffer result;
             rd = new BufferedReader(new InputStreamReader(botJsonStream));
@@ -81,7 +78,6 @@ public class Main {
             }
 
             String botJson = result.toString();
-
             JsonObject botInfo = JsonParser.parseString(botJson).getAsJsonObject();
             JsonObject versionInfo = botInfo.get("version").getAsJsonObject();
 
@@ -89,13 +85,7 @@ public class Main {
             VersionType versionType = VersionType.valueOf(versionInfo.get("type").getAsString());
 
             VERSION = new Version(versionRelease).setType(versionType);
-
             LOGGER.info("Starting RaspiBot v"+VERSION.getFullVersionString());
-        } catch (FileNotFoundException e) {
-            LOGGER.warning("Could not load bot Json! If this is a development environment, you can ignore this message.");
-            LOGGER.info("Starting RaspiBot v"+VERSION.getVersionString());
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         Config.load("config.json"); // load config
@@ -106,7 +96,7 @@ public class Main {
         Console.start(); // start listening for console input
 
         String token = config.token;
-        if(token.equals("<put your token here>")) {
+        if(token.equals("TOKEN")) {
             Main.LOGGER.info("You need to specify a token!");
             System.exit(0);
         }
@@ -129,6 +119,7 @@ public class Main {
         CONSOLECOMMANDCOUNT = ConsoleCommandManager.getCommandCount();
 
         jda.enableIntents(EnumSet.allOf(GatewayIntent.class)); //requires privileged gateway intends (enable at discord.com/developers/applications, might need your bot to be verified)
+        jda.setRawEventsEnabled(true);
         jda.setStatus(OnlineStatus.IDLE);
         jda.setActivity(Activity.playing("Booting up ..."));
 
@@ -138,6 +129,14 @@ public class Main {
             Main.LOGGER.severe(e.getMessage());
             Main.LOGGER.severe("Could not perform login! Exiting ...");
             System.exit(1);
+        }
+
+        if(!(config.topgg_token.equals("") ||config.topgg_token.equals("TOPGG_TOKEN"))) {
+            dbl_api = new DiscordBotListAPI.Builder()
+                    .token(config.topgg_token)
+                    .botId(bot.getSelfUser().getId())
+                    .build();
+            USE_DBL = true;
         }
 
         DataSource.getConnection(); // connect to mysql
@@ -152,8 +151,7 @@ public class Main {
         LOGGER.info("Closing MySQL Connection ...");
         try {
             DataSource.getConnection().close();
-        } catch (SQLException ignored) {
-        }
+        } catch (SQLException ignored) {}
         LOGGER.info("Stopping Console Thread ...");
         Console.stop();
         LOGGER.info("Exiting ...");

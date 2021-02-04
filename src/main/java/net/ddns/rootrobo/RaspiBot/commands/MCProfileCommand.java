@@ -63,7 +63,6 @@ public class MCProfileCommand implements Command {
         JsonObject json = jsonBody.getAsJsonObject();
 
         String UUID = json.get("id").getAsString();
-        //username = json.get("name").getAsString();
 
         HttpGet request2 = new HttpGet("https://sessionserver.mojang.com/session/minecraft/profile/"+UUID);
         HttpResponse response2 = null;

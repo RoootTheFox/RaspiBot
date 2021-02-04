@@ -30,7 +30,7 @@ public class KickCommand implements Command {
         }
 
         if(!guild.getSelfMember().canInteract(target)) {
-            msg.getChannel().sendMessage(EmbedUtils.getSelfNoPermissionEmbed(msg, "to kick that user!")).complete();
+            msg.getChannel().sendMessage(EmbedUtils.getSelfNoPermissionEmbed(msg.getAuthor(), "to kick that user!")).complete();
         } else {
             if(!Objects.requireNonNull(msg.getMember()).canInteract(target)) {
                 Message errorMSG = new MessageBuilder().setEmbed(new EmbedBuilder()

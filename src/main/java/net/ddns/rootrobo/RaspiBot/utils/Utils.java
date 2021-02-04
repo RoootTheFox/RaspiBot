@@ -7,8 +7,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.awt.*;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.util.Random;
+import java.util.jar.JarFile;
 
 public class Utils {
     // got that somewhere on stackoverflow
@@ -20,11 +22,12 @@ public class Utils {
         return Color.getHSBColor(hue, saturation, luminance);
     }
 
-    public static int[] getUptime(long uptime) {
+    public static int[] getUptime(long uptimeMillis) {
         int[] res = new int[4];
 
-        long totalSeconds = (System.currentTimeMillis() / 1000) - (uptime / 1000);
+        long totalSeconds = (System.currentTimeMillis() / 1000) - (uptimeMillis / 1000);
         long days = totalSeconds / 86400;
+        totalSeconds %= 86400;
         long hours = totalSeconds / 3600;
         totalSeconds %= 3600;
         long minutes = totalSeconds / 60;
@@ -94,5 +97,35 @@ public class Utils {
 
     public static long getPing() {
         return Main.bot.getRestPing().complete();
+    }
+
+    public static InputStream getInputStreamFromBotJar(String name) {
+        String filePath = null;
+        try {
+            filePath = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        if(filePath == null) return null;
+
+        InputStream stream = null;
+
+        try {
+            JarFile jar = new JarFile(filePath);
+            stream = jar.getInputStream(jar.getEntry(name));
+        } catch (FileNotFoundException e) {
+            filePath = filePath.replace(File.separator+"classes"+File.separator+"java"+File.separator+"main", File.separator+"resources"+File.separator+"main");
+
+            try {
+                stream = new FileInputStream(new File(filePath, name));
+            } catch (FileNotFoundException fileNotFoundException) {
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return stream;
     }
 }

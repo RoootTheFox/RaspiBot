@@ -15,7 +15,7 @@ public class DynamicActivity {
     private static final ArrayList<Map<String, String>> activities = new ArrayList<>();
     public static void start() {
         thread = new Thread(() -> {
-            JsonArray activityArray = null;
+            JsonArray activityArray;
             if(!new File("activity.json").exists()) {
                 FileWriter writer;
                 try {
@@ -63,26 +63,43 @@ public class DynamicActivity {
             }
 
             while (shouldrun) {
-                for (int i = 0; i < activities.size(); i++) {
-                    String text = activities.get(i).get("text");
+                for (Map<String, String> activity : activities) {
+                    String text = activity.get("text");
                     int channelCount = 0;
                     for (Guild guild : Main.bot.getGuilds()) {
-                        channelCount = channelCount+guild.getChannels().size();
+                        channelCount = channelCount + guild.getChannels().size();
                     }
+                    int guildCount = Main.bot.getGuilds().size();
+                    int userCount = Main.bot.getUsers().size();
+
+                    // check if we are on the top.gg bot server
+                    Guild dblGuild = Main.bot.getGuildById(532753259740266506L);
+                    if (dblGuild != null) {
+                        guildCount = guildCount - 1;
+                        channelCount = channelCount - dblGuild.getChannels().size();
+                        userCount = userCount - dblGuild.getMemberCount();
+                    }
+
                     text = text.replace("{version}", Main.VERSION.getFullVersionString())
-                            .replace("{guilds}", String.valueOf(Main.bot.getGuilds().size()))
+                            .replace("{guilds}", String.valueOf(guildCount))
                             .replace("{channels}", String.valueOf(channelCount))
-                            .replace("{users}", String.valueOf(Main.bot.getUsers().size()));
-                    Activity.ActivityType type = Activity.ActivityType.valueOf(activities.get(i).get("type").toUpperCase().replace("PLAYING", "DEFAULT"));
+                            .replace("{users}", String.valueOf(userCount));
+                    Activity.ActivityType type = Activity.ActivityType.valueOf(activity.get("type").toUpperCase().replace("PLAYING", "DEFAULT"));
                     Main.bot.getPresence().setActivity(Activity.of(type, text));
 
-                    if(!shouldrun) break;
+                    // also update DBL info
+                    if (Main.USE_DBL) {
+                        Main.dbl_api.setStats(guildCount); // set guild count
+                    }
+
+                    if (!shouldrun) break;
                     try {
+                        //noinspection BusyWait
                         Thread.sleep(10000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if(!shouldrun) break;
+                    if (!shouldrun) break;
                 }
             }
         });
