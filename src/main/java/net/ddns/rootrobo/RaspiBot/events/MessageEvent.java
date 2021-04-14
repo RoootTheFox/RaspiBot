@@ -22,7 +22,8 @@ import java.util.*;
 public class MessageEvent extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if(event.getAuthor().isBot()) return;
+        if(event.getAuthor().getId().equals(Main.bot.getSelfUser().getId())) return;
+        //if(event.getAuthor().isBot()) return;
         if(!(event.getChannelType() == ChannelType.TEXT)) return;
 
         String content = event.getMessage().getContentRaw();

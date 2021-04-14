@@ -2,27 +2,78 @@ package net.ddns.rootrobo.RaspiBot.commands;
 
 import net.ddns.rootrobo.RaspiBot.Main;
 import net.ddns.rootrobo.RaspiBot.stuff.Command;
+import net.ddns.rootrobo.RaspiBot.utils.NetUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @SuppressWarnings("unused")
 public class AddEmoteCommand implements Command {
     @Override
     public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+        int addedAttachments = 0;
         if(args.length == 0) {
-            channel.sendMessage("Please put at least one emote to download!").complete();
+            if(msg.getAttachments().size() > 0) {
+                for (Message.Attachment attachment : msg.getAttachments()) {
+                    if(attachment.isImage()) {
+                        try {
+                            Icon icon = attachment.retrieveAsIcon().get();
+                            msg.getGuild().createEmote(attachment.getFileName().substring(0, attachment.getFileName().lastIndexOf(".")).replace(".", ""), icon).complete();
+                            addedAttachments++;
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    } else if(attachment.isVideo()) {
+                        try {
+                            Icon icon = Icon.from(attachment.retrieveInputStream().get(), Icon.IconType.GIF);
+                            msg.getGuild().createEmote(attachment.getFileName().substring(0, attachment.getFileName().lastIndexOf(".")).replace(".", ""), icon).complete();
+                        } catch (IOException | InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                msg.getChannel().sendMessage("Added "+addedAttachments+" emotes!").complete();
+            } else {
+                channel.sendMessage("Please put at least one emote to steal!").complete();
+            }
             return;
         }
+
+        String agent = NetUtils.getRandomUserAgent();
+
+        StringBuilder newArgs = new StringBuilder();
+        for (String s : args) {
+            String multipleEmotes = s.replace("><", "> <");
+            newArgs.append(multipleEmotes).append(" ");
+        }
+        args = newArgs.toString().split(" ");
+
+        newArgs = new StringBuilder();
+
+        for (String s : args) {
+            String emote = s.replaceAll(" ", "");
+            if(!emote.equalsIgnoreCase("")) {
+                newArgs.append(emote).append(" ");
+            }
+        }
+
+        args = newArgs.toString().split(" ");
+
+        msg.getChannel().sendTyping().queue();
+
         ArrayList<String> urls = new ArrayList<>();
         List<Emote> e = msg.getEmotes();
         HttpClient client = HttpClientBuilder.create().build();
@@ -38,6 +89,11 @@ public class AddEmoteCommand implements Command {
             emoteIdentifiers.add(identifier);
         }
 
+        if(args.length > 10) {
+            msg.getChannel().sendMessage("Too many emotes! You can only add 10 emotes at once!").complete();
+            return;
+        }
+
         for (String arg : args) {
             if(arg.startsWith("<") && arg.endsWith(">")) {
                 if(!emoteIdentifiers.contains(arg)) {
@@ -47,6 +103,7 @@ public class AddEmoteCommand implements Command {
                         if(arg.indexOf(":") != 0) {
                             arg = arg.substring(arg.indexOf(":")+1).replace(">", "");
                             HttpGet request = new HttpGet("https://cdn.discordapp.com/emojis/"+arg+".gif");
+                            request.setHeader("User-Agent", agent);
                             HttpResponse response;
                             try {
                                 response = client.execute(request);
@@ -60,10 +117,12 @@ public class AddEmoteCommand implements Command {
                             continue;
                         }
                     }
+
                     if (arg.startsWith("<:")) {
                         Main.LOGGER.info("emoji not animated");
                         arg = arg.substring(2);
                         HttpGet request = new HttpGet("https://cdn.discordapp.com/emojis/"+arg+".png");
+                        request.setHeader("User-Agent", agent);
                         HttpResponse response;
                         try {
                             response = client.execute(request);
@@ -79,6 +138,7 @@ public class AddEmoteCommand implements Command {
             } else {
                 Main.LOGGER.info("emoji ID");
                 HttpGet request = new HttpGet("https://cdn.discordapp.com/emojis/"+arg+".gif");
+                request.setHeader("User-Agent", agent);
                 HttpResponse response;
                 try {
                     response = client.execute(request);
@@ -90,6 +150,7 @@ public class AddEmoteCommand implements Command {
                     urls.add("https://cdn.discordapp.com/emojis/"+arg+".gif");
                 } else {
                     HttpGet request2 = new HttpGet("https://cdn.discordapp.com/emojis/"+arg+".png");
+                    request2.setHeader("User-Agent", agent);
                     HttpResponse response2;
                     try {
                         response2 = client.execute(request2);
@@ -107,10 +168,19 @@ public class AddEmoteCommand implements Command {
         int addedEmotes = 0;
         for (Emote emote : e) {
             try {
-                InputStream input = new URL(emote.getImageUrl()).openStream();
-                Icon icon = Icon.from(input);
-                msg.getGuild().createEmote(emote.getName(), icon).complete();
-                addedEmotes++;
+                CloseableHttpClient c = HttpClients.createDefault();
+                HttpGet httpGet = new HttpGet(emote.getImageUrl());
+                httpGet.setHeader("User-Agent", agent);
+                try (CloseableHttpResponse response1 = c.execute(httpGet)) {
+                    final HttpEntity entity = response1.getEntity();
+                    if (entity != null) {
+                        try (InputStream inputStream = entity.getContent()) {
+                            Icon icon = Icon.from(inputStream);
+                            msg.getGuild().createEmote(emote.getName(), icon).complete();
+                            addedEmotes++;
+                        }
+                    }
+                }
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -122,10 +192,19 @@ public class AddEmoteCommand implements Command {
             name = "u_"+name.substring(0, name.indexOf(".")-1);
 
             try {
-                InputStream input = new URL(url).openStream();
-                Icon icon = Icon.from(input);
-                msg.getGuild().createEmote(name, icon).complete();
-                addedEmotes++;
+                CloseableHttpClient c = HttpClients.createDefault();
+                HttpGet httpGet = new HttpGet(url);
+                httpGet.setHeader("User-Agent", agent);
+                try (CloseableHttpResponse response1 = c.execute(httpGet)) {
+                    final HttpEntity entity = response1.getEntity();
+                    if (entity != null) {
+                        try (InputStream inputStream = entity.getContent()) {
+                            Icon icon = Icon.from(inputStream);
+                            msg.getGuild().createEmote(name, icon).complete();
+                            addedEmotes++;
+                        }
+                    }
+                }
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }

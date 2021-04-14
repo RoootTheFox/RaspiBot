@@ -29,7 +29,7 @@ public class GuildMemberLeaveEvent extends ListenerAdapter {
                     leave_msg = leave_msg
                             .replace("{server}", event.getGuild().getName())
                             .replace("{members}", String.valueOf(event.getGuild().getMemberCount()))
-                            .replace("{user}", Objects.requireNonNull(event.getMember()).getUser().getAsMention());
+                            .replace("{user}", Objects.requireNonNull(event.getMember()).getUser().getAsTag());
                     TextChannel channel = Main.bot.getTextChannelById(leaveChannelID);
                     if(channel != null) {
                         channel.sendMessage(leave_msg).complete();

@@ -16,6 +16,10 @@ import java.util.concurrent.atomic.AtomicLong;
 public class PingCommand implements Command {
     @Override
     public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+        boolean pong = false;
+        if(args.length != 0) {
+            if(args[0].equalsIgnoreCase("pong")) pong = true;
+        }
         msg.getChannel().sendTyping().queue();
         int[] uptime = Utils.getUptime(Main.UPTIME);
 
@@ -27,8 +31,12 @@ public class PingCommand implements Command {
         String up = days+" days, "+hours+" hours, "+minutes+" minutes, "+seconds+" seconds";
 
         long ping = Utils.getPing();
-
-        EmbedBuilder out = new EmbedBuilder().setTitle("Pong!");
+        EmbedBuilder out = new EmbedBuilder();
+        if(pong) {
+            out.setTitle(":ping_pong: Pong!");
+        } else {
+            out.setTitle("Pong!");
+        }
         out.addField("Gateway Ping", ping+"ms", false);
         out.addField("Uptime", up, false);
         out.setColor(new Color(0xFF6AFF47, true));

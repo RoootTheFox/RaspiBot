@@ -168,17 +168,15 @@ public class GlobalChat {
         GlobalChat.send(event.getMessage(), finalMSG, language, imgURL, isMod, isAdmin, isOwner, false);
     }
 
-    public static String getLanguageByCode(String langcode) {
-        switch (langcode.toLowerCase()) {
+    public static String getLanguageByCode(String lang_code) {
+        switch (lang_code.toLowerCase()) {
             default: {
                 return null;
             }
             case "en": {
-                System.out.println("english");
                 return "english";
             }
             case "de": {
-                System.out.println("german");
                 return "german";
             }
         }
