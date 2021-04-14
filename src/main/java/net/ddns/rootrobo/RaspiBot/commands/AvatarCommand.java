@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.entities.User;
 @SuppressWarnings("unused")
 public class AvatarCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         User u;
 
         if(args.length == 0) {
@@ -22,7 +22,7 @@ public class AvatarCommand implements Command {
         } else {
             u = MessageUtils.getFirstUser(msg, args);
             if(u == null) {
-                channel.sendMessage("Invalid user!").complete();
+                msg.getChannel().sendMessage("Invalid user!").complete();
                 return;
             }
         }
@@ -36,7 +36,7 @@ public class AvatarCommand implements Command {
                 .setImage(avatarURL)
                 .setColor(Utils.getRandomColor())
         .build()).build();
-        channel.sendMessage(message).complete();
+        msg.getChannel().sendMessage(message).complete();
     }
 
     @Override

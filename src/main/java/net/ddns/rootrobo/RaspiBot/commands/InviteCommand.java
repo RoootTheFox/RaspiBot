@@ -8,13 +8,12 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
 import java.awt.Color;
 
 @SuppressWarnings("unused")
 public class InviteCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         MessageEmbed embed = new EmbedBuilder()
                 .setTitle(Main.bot.getSelfUser().getName())
                 .setDescription("Thanks for using RaspiBot! To invite the bot to your server, click :link: [this link](https://discord.com/api/oauth2/authorize?client_id=622020397449216000&permissions=8&scope=bot).")
@@ -22,7 +21,7 @@ public class InviteCommand implements Command {
                 .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON)
 
                 .build();
-        channel.sendMessage(embed).complete();
+        msg.getChannel().sendMessage(embed).complete();
     }
 
     @Override

@@ -5,17 +5,16 @@ import net.ddns.rootrobo.RaspiBot.stuff.Command;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 @SuppressWarnings("unused")
 public class StopCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         if (!(msg.getAuthor().getId().equals(Main.DEVELOPER_ID))) {
             return;
         }
 
-        channel.sendMessage("bot stopped.").complete();
+        msg.getChannel().sendMessage("bot stopped.").complete();
         Main.shutdown();
     }
 

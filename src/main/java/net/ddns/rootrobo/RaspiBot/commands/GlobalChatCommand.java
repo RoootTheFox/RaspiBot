@@ -23,7 +23,7 @@ import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class GlobalChatCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         if(args.length < 2) {
             msg.getTextChannel().sendMessage("global create <language> | global set <language> #channel").complete();
             return;
@@ -32,7 +32,7 @@ public class GlobalChatCommand implements Command {
         if(args[0].equalsIgnoreCase("create")) {
             String language = GlobalChat.getLanguageByCode(args[1]);
             if(language == null) {
-                channel.sendMessage("Unkown language Code! Please use `DE` or `EN`!\nIf you want another language to be added, please DM the author of this bot.").complete();
+                msg.getChannel().sendMessage("Unkown language Code! Please use `DE` or `EN`!\nIf you want another language to be added, please DM the author of this bot.").complete();
                 return;
             }
 
@@ -62,7 +62,7 @@ public class GlobalChatCommand implements Command {
 
             String language = GlobalChat.getLanguageByCode(languageCode);
             if(language == null) {
-                channel.sendMessage("Unkown language Code! Please use `DE` or `EN`!\nIf you want another language to be added, please DM the author of this bot.").complete();
+                msg.getChannel().sendMessage("Unkown language Code! Please use `DE` or `EN`!\nIf you want another language to be added, please DM the author of this bot.").complete();
                 return;
             }
 

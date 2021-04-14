@@ -9,7 +9,6 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
 import java.awt.*;
@@ -20,7 +19,7 @@ import java.sql.SQLException;
 @SuppressWarnings("unused")
 public class GlobalChatUnmodCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         boolean isOwner = false;
         String authorAvatarURL = msg.getAuthor().getAvatarUrl();
         if(authorAvatarURL == null) authorAvatarURL = msg.getAuthor().getDefaultAvatarUrl();

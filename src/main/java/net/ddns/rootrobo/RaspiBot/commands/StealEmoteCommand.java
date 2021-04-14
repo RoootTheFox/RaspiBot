@@ -6,24 +6,21 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class StealEmoteCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         if(args.length == 0) {
-            channel.sendMessage("Please put at least one emote to download!").complete();
+            msg.getChannel().sendMessage("Please put at least one emote to download!").complete();
             return;
         }
         ArrayList<String> urls = new ArrayList<>();
@@ -115,7 +112,7 @@ public class StealEmoteCommand implements Command {
         for (String url : urls) {
             out.append(url).append("\n");
         }
-        channel.sendMessage(out.toString()).complete();
+        msg.getChannel().sendMessage(out.toString()).complete();
     }
 
     @Override

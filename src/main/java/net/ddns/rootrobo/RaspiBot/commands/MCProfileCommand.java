@@ -7,7 +7,6 @@ import net.ddns.rootrobo.RaspiBot.stuff.Command;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -22,9 +21,9 @@ import java.util.Base64;
 @SuppressWarnings("unused")
 public class MCProfileCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         if(args.length == 0) {
-            channel.sendMessage("Please specify a username!").complete();
+            msg.getChannel().sendMessage("Please specify a username!").complete();
             return;
         }
         String username = args[0];
@@ -105,7 +104,7 @@ public class MCProfileCommand implements Command {
         JsonObject json3 = jsonElement.getAsJsonObject();
 
         String skinURL = json3.get("textures").getAsJsonObject().get("SKIN").getAsJsonObject().get("url").getAsString();
-        channel.sendMessage(skinURL).complete();
+        msg.getChannel().sendMessage(skinURL).complete();
     }
 
     @Override

@@ -8,7 +8,6 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
 import java.util.Objects;
@@ -16,7 +15,7 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 public class BugCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         String reporter = msg.getAuthor().getAsTag();
         String bug = String.join(" ", args);
         if(bug.length() < 20) {
@@ -45,7 +44,7 @@ public class BugCommand implements Command {
                     .setDescription("Your bug was successfully reported! I will try to fix the issue as soon as possible! Thank you!")
                     .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON)
                     .build();
-            channel.sendMessage(success).complete();
+            msg.getChannel().sendMessage(success).complete();
         } catch (Exception ignored) {
             MessageEmbed embed1 = new EmbedBuilder()
                     .setTitle("Error")
@@ -53,7 +52,7 @@ public class BugCommand implements Command {
                     .setDescription("Your Bug could NOT be reported! Please DM this error to the developer of this bot!")
                     .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON)
                     .build();
-            channel.sendMessage(embed1).complete();
+            msg.getChannel().sendMessage(embed1).complete();
         }
     }
 

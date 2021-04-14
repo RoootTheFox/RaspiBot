@@ -7,15 +7,13 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
-import java.util.concurrent.atomic.AtomicLong;
 
 @SuppressWarnings("unused")
 public class PingCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         boolean pong = false;
         if(args.length != 0) {
             if(args[0].equalsIgnoreCase("pong")) pong = true;

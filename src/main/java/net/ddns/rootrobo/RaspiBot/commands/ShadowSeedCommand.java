@@ -4,7 +4,6 @@ import net.ddns.rootrobo.RaspiBot.stuff.Command;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 // most of this code is basically just stolen from KaptainWutax. (github.com/KaptainWutax)
 // It is licensed under the MIT license.
@@ -24,16 +23,16 @@ public class ShadowSeedCommand implements Command {
     public static final long B = 1442695040888963407L;
 
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         if(args.length == 0) {
-            channel.sendMessage("No seed given!").complete();
+            msg.getChannel().sendMessage("No seed given!").complete();
             System.exit(0);
         }
         long seed = Long.parseLong(args[0]);
 
         long nextSeed = mixSeed(seed, 0L);
         long shadowSeed = unmixSeed(nextSeed, 0L, Solution.of(~seed));
-        channel.sendMessage(String.valueOf(shadowSeed)).complete();
+        msg.getChannel().sendMessage(String.valueOf(shadowSeed)).complete();
     }
 
     @Override

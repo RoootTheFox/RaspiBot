@@ -8,7 +8,6 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
@@ -17,7 +16,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class ClearCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         OffsetDateTime maxDate = OffsetDateTime.now().minus(2, ChronoUnit.WEEKS);
         int maxMSGs;
         try {
@@ -32,7 +31,7 @@ public class ClearCommand implements Command {
                     .setColor(EmbedUtils.ERROR_COLOR)
                     .setDescription("The amount of messages to delete has to be between 1 and 100.")
                     .build()).build();
-            channel.sendMessage(errorMSG).complete();
+            msg.getChannel().sendMessage(errorMSG).complete();
             return;
         }
 
@@ -40,8 +39,8 @@ public class ClearCommand implements Command {
         new Thread(() -> {
             List<Message> msgs = msg.getChannel().getHistory().retrievePast(finalMaxMSGs).complete();
             msgs.removeIf(message -> message.getTimeCreated().isBefore(maxDate));
-            channel.purgeMessages(msgs);
-            MessageUtils.selfDestruct(channel, "Deleted "+msgs.size()+" messages!", 2500);
+            msg.getChannel().purgeMessages(msgs);
+            MessageUtils.selfDestruct(msg.getChannel(), "Deleted "+msgs.size()+" messages!", 2500);
         }).start();
     }
 

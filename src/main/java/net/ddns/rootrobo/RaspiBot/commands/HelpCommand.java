@@ -10,7 +10,6 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,7 +18,7 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public class HelpCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Commands")
                 .setColor(Utils.getRandomColor())
@@ -41,7 +40,7 @@ public class HelpCommand implements Command {
         }
 
         Message message = new MessageBuilder().setEmbed(eb.build()).build();
-        channel.sendMessage(message).complete();
+        msg.getChannel().sendMessage(message).complete();
     }
 
     @Override

@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -18,7 +17,7 @@ import java.util.Objects;
 public class GuildInfoCommand implements Command {
 
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         List<Member> m = guild.getMembers();
         List<Member> members = new ArrayList<>(m);
         members.removeIf(member -> member.getUser().isBot());
@@ -40,7 +39,7 @@ public class GuildInfoCommand implements Command {
         info.addField("Creation date", guild.getTimeCreated().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")), true);
         info.setThumbnail(guild.getIconUrl());
 
-        channel.sendMessage(info.build()).complete();
+        msg.getChannel().sendMessage(info.build()).complete();
     }
 
     @Override

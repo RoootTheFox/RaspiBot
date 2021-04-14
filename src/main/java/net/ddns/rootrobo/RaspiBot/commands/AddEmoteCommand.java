@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutionException;
 @SuppressWarnings("unused")
 public class AddEmoteCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         int addedAttachments = 0;
         if(args.length == 0) {
             if(msg.getAttachments().size() > 0) {
@@ -47,7 +47,7 @@ public class AddEmoteCommand implements Command {
                 }
                 msg.getChannel().sendMessage("Added "+addedAttachments+" emotes!").complete();
             } else {
-                channel.sendMessage("Please put at least one emote to steal!").complete();
+                msg.getChannel().sendMessage("Please put at least one emote to steal!").complete();
             }
             return;
         }
@@ -210,7 +210,7 @@ public class AddEmoteCommand implements Command {
             }
         }
 
-        channel.sendMessage("Added "+addedEmotes+" emotes!").complete();
+        msg.getChannel().sendMessage("Added "+addedEmotes+" emotes!").complete();
     }
 
     @Override

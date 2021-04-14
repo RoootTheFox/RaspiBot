@@ -11,7 +11,6 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class InviteInfoCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         if(args.length == 0) return;
         String code = args[0]
                 .replace("https://", "")
@@ -151,7 +150,7 @@ public class InviteInfoCommand implements Command {
         // send embed pog
         Message e = new MessageBuilder().setEmbed(E.build()).build();
 
-        channel.sendMessage(e).complete();
+        msg.getChannel().sendMessage(e).complete();
     }
 
     @Override

@@ -21,7 +21,7 @@ import java.util.Arrays;
 @SuppressWarnings("unused")
 public class WelcomeCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         if(args.length == 0) {
             msg.getTextChannel().sendMessage("message <MSG> | channel <#channel>").complete();
             return;

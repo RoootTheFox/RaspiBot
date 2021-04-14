@@ -16,7 +16,7 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 public class KickCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         User u = MessageUtils.getFirstUser(msg, args);
         if(u == null) {
             return;
@@ -38,7 +38,7 @@ public class KickCommand implements Command {
                         .setColor(EmbedUtils.ERROR_COLOR)
                         .setDescription("You can't interact with that member!")
                         .build()).build();
-                channel.sendMessage(errorMSG).complete();
+                msg.getChannel().sendMessage(errorMSG).complete();
                 return;
             }
 

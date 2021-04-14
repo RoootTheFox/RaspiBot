@@ -12,7 +12,7 @@ import java.util.Arrays;
 @SuppressWarnings("unused")
 public class AddRoleCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         if(msg.getMember() == null) return;
 
         Member target = msg.getMentionedMembers().get(0);
@@ -28,7 +28,7 @@ public class AddRoleCommand implements Command {
                     .setColor(EmbedUtils.ERROR_COLOR)
                     .setDescription("Please specify the member you want to add a role to!")
                     .build()).build();
-            channel.sendMessage(errorMSG).complete();
+            msg.getChannel().sendMessage(errorMSG).complete();
             return;
         }
 
@@ -38,7 +38,7 @@ public class AddRoleCommand implements Command {
                     .setColor(EmbedUtils.ERROR_COLOR)
                     .setDescription("You can't interact with that member!")
                     .build()).build();
-            channel.sendMessage(errorMSG).complete();
+            msg.getChannel().sendMessage(errorMSG).complete();
             return;
         }
 
@@ -48,7 +48,7 @@ public class AddRoleCommand implements Command {
                     .setColor(EmbedUtils.ERROR_COLOR)
                     .setDescription("I can't interact with that member!")
                     .build()).build();
-            channel.sendMessage(errorMSG).complete();
+            msg.getChannel().sendMessage(errorMSG).complete();
             return;
         }
 
@@ -61,7 +61,7 @@ public class AddRoleCommand implements Command {
                         .setColor(EmbedUtils.ERROR_COLOR)
                         .setDescription("Could not find a role!")
                         .build()).build();
-                channel.sendMessage(errorMSG).complete();
+                msg.getChannel().sendMessage(errorMSG).complete();
                 return;
             }
         }
@@ -74,7 +74,7 @@ public class AddRoleCommand implements Command {
                             .setColor(EmbedUtils.SUCCESS_COLOR)
                             .setDescription(target.getEffectiveName() +" has been given the "+ finalRole.getAsMention()+" role.")
                             .build()).build();
-                    channel.sendMessage(successMSG).queue();
+                    msg.getChannel().sendMessage(successMSG).queue();
                 }
         );
     }

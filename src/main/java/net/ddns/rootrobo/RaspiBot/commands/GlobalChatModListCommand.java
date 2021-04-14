@@ -9,7 +9,6 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
 import java.awt.*;
@@ -21,7 +20,7 @@ import java.util.*;
 @SuppressWarnings("unused")
 public class GlobalChatModListCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         ArrayList<User> mods = new ArrayList<>();
         HashMap<String, String> mods2 = new HashMap<>();
         String SQL_QUERY2 = "SELECT * FROM globalchat_userdata WHERE isMod = true";

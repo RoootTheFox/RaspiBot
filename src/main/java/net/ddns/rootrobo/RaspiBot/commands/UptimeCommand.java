@@ -9,12 +9,11 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 @SuppressWarnings("unused")
 public class UptimeCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         int[] uptime = Utils.getUptime(Main.UPTIME);
         int days = uptime[0];
         int hours = uptime[1];

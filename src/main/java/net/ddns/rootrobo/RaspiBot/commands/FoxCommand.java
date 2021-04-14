@@ -11,7 +11,6 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -24,7 +23,7 @@ import java.io.InputStreamReader;
 @SuppressWarnings("unused")
 public class FoxCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet request = new HttpGet("https://meme-api.herokuapp.com/gimme/foxes");
         HttpResponse response = null;
@@ -68,14 +67,14 @@ public class FoxCommand implements Command {
                 .setColor(Utils.getRandomColor())
                 .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON)
                 .build()).build();
-        channel.sendMessage(message).complete();
+        msg.getChannel().sendMessage(message).complete();
     }
 
     @Override
     public String getName() { return "fox"; }
 
     @Override
-    public String getDescription() { return "Foxes."; }
+    public String getDescription() { return "Foxes! :3"; }
 
     @Override
     public String[] getAliases() { return new String[]{"foxxy"}; }

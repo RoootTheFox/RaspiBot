@@ -4,7 +4,6 @@ import net.ddns.rootrobo.RaspiBot.stuff.Command;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.Calendar;
 
@@ -12,8 +11,8 @@ import java.util.Calendar;
 @SuppressWarnings("unused")
 public class FakeBoostCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
-        Message message = channel.sendMessage("<a:xenon:662002293759148032> boosting this server, pls wait").complete();
+    public void run(Message msg, String[] args, Guild guild) {
+        Message message = msg.getChannel().sendMessage("<a:xenon:662002293759148032> boosting this server, pls wait").complete();
         new Thread(() -> {
             try {
                 Thread.sleep(5000);

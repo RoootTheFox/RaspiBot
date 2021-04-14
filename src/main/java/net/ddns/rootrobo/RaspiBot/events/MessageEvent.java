@@ -56,7 +56,7 @@ public class MessageEvent extends ListenerAdapter {
                     }
                 }
                 Main.LOGGER.info(event.getAuthor().getAsTag() + " issued bot command: " + Main.PREFIX + content);
-                run.run(event.getMessage(), args, event.getGuild(), event.getTextChannel());
+                run.run(event.getMessage(), args, event.getGuild());
                 return;
             }
         }

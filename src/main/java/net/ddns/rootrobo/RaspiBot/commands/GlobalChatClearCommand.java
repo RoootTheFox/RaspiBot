@@ -23,7 +23,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class GlobalChatClearCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         boolean isBanned = false;
         boolean isAdmin = false;
         boolean isMod = false;

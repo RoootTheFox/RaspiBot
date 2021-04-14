@@ -7,7 +7,6 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -20,9 +19,9 @@ import java.io.InputStreamReader;
 @SuppressWarnings("unused")
 public class MCSkinCommand implements Command {
     @Override
-    public void run(Message msg, String[] args, Guild guild, TextChannel channel) {
+    public void run(Message msg, String[] args, Guild guild) {
         if(args.length == 0) {
-            channel.sendMessage("Please specify a username!").complete();
+            msg.getChannel().sendMessage("Please specify a username!").complete();
             return;
         }
         String username = args[0];
@@ -67,7 +66,7 @@ public class MCSkinCommand implements Command {
         username = username.substring(0, username.indexOf(" |"));
 
         if(skinID.equals("")) {
-            channel.sendMessage("This player doesn't exist or doesn't have a skin!").complete();
+            msg.getChannel().sendMessage("This player doesn't exist or doesn't have a skin!").complete();
             return;
         }
 
@@ -79,7 +78,7 @@ public class MCSkinCommand implements Command {
                 .setImage(skinURL)
         .build()).build();
 
-        channel.sendMessage(message).complete();
+        msg.getChannel().sendMessage(message).complete();
     }
 
     @Override
