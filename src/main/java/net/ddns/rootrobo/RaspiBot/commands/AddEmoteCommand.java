@@ -3,8 +3,10 @@ package net.ddns.rootrobo.RaspiBot.commands;
 import net.ddns.rootrobo.RaspiBot.Main;
 import net.ddns.rootrobo.RaspiBot.stuff.Command;
 import net.ddns.rootrobo.RaspiBot.utils.NetUtils;
+import net.ddns.rootrobo.RaspiBot.utils.Utils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -14,6 +16,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -22,30 +26,69 @@ import java.util.concurrent.ExecutionException;
 
 @SuppressWarnings("unused")
 public class AddEmoteCommand implements Command {
+    private static final int maxSize = 262144;
     @Override
     public void run(Message msg, String[] args, Guild guild) {
         int addedAttachments = 0;
+        int errors = 0;
+
+        msg.getChannel().sendTyping().queue();
         if(args.length == 0) {
             if(msg.getAttachments().size() > 0) {
                 for (Message.Attachment attachment : msg.getAttachments()) {
                     if(attachment.isImage()) {
                         try {
-                            Icon icon = attachment.retrieveAsIcon().get();
+                            InputStream inp = attachment.retrieveInputStream().get();
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            byte[] buffer = new byte[1024];
+                            int len;
+                            while ((len = inp.read(buffer)) > -1 ) {
+                                baos.write(buffer, 0, len);
+                            }
+                            baos.flush();
+                            byte[] arr = baos.toByteArray();
+
+                            long size = Utils.streamSize(new ByteArrayInputStream(arr));
+                            if(size >= maxSize) {
+                                errors++;
+                                break;
+                            }
+
+                            Icon icon = Icon.from(new ByteArrayInputStream(arr), Icon.IconType.PNG);
                             msg.getGuild().createEmote(attachment.getFileName().substring(0, attachment.getFileName().lastIndexOf(".")).replace(".", ""), icon).complete();
                             addedAttachments++;
-                        } catch (InterruptedException | ExecutionException e) {
-                            e.printStackTrace();
+                        } catch (InterruptedException | ExecutionException | ErrorResponseException | IOException e) {
+                            Main.LOGGER.info(e.getMessage());
+                            errors++;
                         }
                     } else if(attachment.isVideo()) {
                         try {
-                            Icon icon = Icon.from(attachment.retrieveInputStream().get(), Icon.IconType.GIF);
+                            InputStream inp = attachment.retrieveInputStream().get();
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            byte[] buffer = new byte[1024];
+                            int len;
+                            while ((len = inp.read(buffer)) > -1 ) {
+                                baos.write(buffer, 0, len);
+                            }
+                            baos.flush();
+                            byte[] arr = baos.toByteArray();
+
+                            long size = Utils.streamSize(new ByteArrayInputStream(arr));
+                            if(size >= maxSize) {
+                                errors++;
+                                break;
+                            }
+
+                            Icon icon = Icon.from(new ByteArrayInputStream(arr), Icon.IconType.GIF);
                             msg.getGuild().createEmote(attachment.getFileName().substring(0, attachment.getFileName().lastIndexOf(".")).replace(".", ""), icon).complete();
-                        } catch (IOException | InterruptedException | ExecutionException e) {
-                            e.printStackTrace();
+                            addedAttachments++;
+                        } catch (InterruptedException | ExecutionException | ErrorResponseException | IOException e) {
+                            Main.LOGGER.info(e.getMessage());
+                            errors++;
                         }
                     }
                 }
-                msg.getChannel().sendMessage("Added "+addedAttachments+" emotes!").complete();
+                msg.getChannel().sendMessage("Added "+addedAttachments+" emotes!\n("+errors+" error(s))").complete();
             } else {
                 msg.getChannel().sendMessage("Please put at least one emote to steal!").complete();
             }
@@ -71,8 +114,6 @@ public class AddEmoteCommand implements Command {
         }
 
         args = newArgs.toString().split(" ");
-
-        msg.getChannel().sendTyping().queue();
 
         ArrayList<String> urls = new ArrayList<>();
         List<Emote> e = msg.getEmotes();
@@ -136,7 +177,7 @@ public class AddEmoteCommand implements Command {
                     }
                 }
             } else {
-                Main.LOGGER.info("emoji ID");
+                // emote id
                 HttpGet request = new HttpGet("https://cdn.discordapp.com/emojis/"+arg+".gif");
                 request.setHeader("User-Agent", agent);
                 HttpResponse response;
@@ -175,6 +216,11 @@ public class AddEmoteCommand implements Command {
                     final HttpEntity entity = response1.getEntity();
                     if (entity != null) {
                         try (InputStream inputStream = entity.getContent()) {
+                            long size = entity.getContentLength();
+                            if(size >= maxSize) {
+                                errors++;
+                                break;
+                            }
                             Icon icon = Icon.from(inputStream);
                             msg.getGuild().createEmote(emote.getName(), icon).complete();
                             addedEmotes++;
@@ -199,6 +245,11 @@ public class AddEmoteCommand implements Command {
                     final HttpEntity entity = response1.getEntity();
                     if (entity != null) {
                         try (InputStream inputStream = entity.getContent()) {
+                            long size = entity.getContentLength();
+                            if(size >= maxSize) {
+                                errors++;
+                                break;
+                            }
                             Icon icon = Icon.from(inputStream);
                             msg.getGuild().createEmote(name, icon).complete();
                             addedEmotes++;
@@ -210,7 +261,7 @@ public class AddEmoteCommand implements Command {
             }
         }
 
-        msg.getChannel().sendMessage("Added "+addedEmotes+" emotes!").complete();
+        msg.getChannel().sendMessage("Added "+addedEmotes+" emotes!\n("+errors+" error(s))").complete();
     }
 
     @Override

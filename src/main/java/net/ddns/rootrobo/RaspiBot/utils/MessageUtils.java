@@ -40,14 +40,12 @@ public class MessageUtils {
         }
 
         if (target != null) {
-            Main.LOGGER.info("TRY 1: "+target.getId());
             return target;
         }
         if(args[0].startsWith("<")) {
             try {
                 target = Main.bot.getUserById(args[0].replace("<@!", "").replace(">", "").replace("<@", ""));
                 if(target != null) {
-                    Main.LOGGER.info("TRY 2: "+ target.getId());
                     return target;
                 }
             } catch (NumberFormatException ignored) {
@@ -56,22 +54,15 @@ public class MessageUtils {
             try {
                 target = Main.bot.getUserById(args[0]);
                 if(target != null) {
-                    Main.LOGGER.info("TRY 3: " + target.getId());
                     return target;
                 }
             } catch (NumberFormatException ignored) {
             }
         }
-        if(target == null) {
-            try {
-                target = Main.bot.getUserByTag(args[0]);
-            } catch (IllegalArgumentException ignored) {
-                return null;
-            }
-            if (target != null) {
-                System.out.println("TRY 4: " + target.getId());
-                return target;
-            }
+        try {
+            target = Main.bot.getUserByTag(args[0]);
+        } catch (IllegalArgumentException ignored) {
+            return null;
         }
         return target;
     }

@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
@@ -20,6 +21,37 @@ import java.util.ArrayList;
 
 public class GlobalChat {
     public static void send(Message msg, String text, String language, String imgURL, boolean isMod, boolean isAdmin, boolean isOwner, boolean isConsole) {
+        if(msg.getReferencedMessage() != null) {
+            Message ref = msg.getReferencedMessage();
+            StringBuilder ref_text = new StringBuilder(ref.getContentRaw());
+            String refauthor = null;
+            if(ref.getEmbeds().size() > 0) {
+                for (MessageEmbed embed : ref.getEmbeds()) {
+                    ref_text.append("\n").append(embed.getDescription());
+                    if(embed.getAuthor() != null) {
+                        refauthor = embed.getAuthor().getName();
+                        assert refauthor != null;
+                        refauthor = "@"+refauthor.substring(refauthor.indexOf("]")+2);
+                    }
+                }
+            }
+
+            if(ref_text.toString().startsWith("\n")) {
+                ref_text = new StringBuilder(ref_text.substring(2));
+            }
+
+            if (refauthor != null && refauthor.equals("")) {
+                refauthor = ref.getAuthor().getName();
+            }
+
+            String[] ref_text_split = ref_text.toString().split("\n");
+            for (int i = 0; i < ref_text_split.length; i++) {
+                ref_text_split[i] = "> " + ref_text_split[i] + "\n";
+            }
+            ref_text = new StringBuilder(String.join("\n", ref_text_split) + refauthor);
+            text = ref_text + "\n" + text;
+        }
+
         if (!isConsole) {
             Main.LOGGER.info("[GlobalChat/"+language.toUpperCase()+"] [" + msg.getGuild().getName() + " @" + msg.getAuthor().getName() + "]: " + text);
         } else {

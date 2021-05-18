@@ -128,4 +128,18 @@ public class Utils {
 
         return stream;
     }
+
+    public static int streamSize(InputStream in) {
+        int chunk;
+        int size = 0;
+        try {
+            byte[] buffer = new byte[1024];
+            while((chunk = in.read(buffer)) != -1){
+                size += chunk;
+            }
+        } catch (IOException ignored) {
+            return Integer.MAX_VALUE;
+        }
+        return size;
+    }
 }

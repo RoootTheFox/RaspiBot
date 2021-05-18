@@ -94,7 +94,7 @@ public class GlobalChatCommand implements Command {
                             Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
                                     .setTitle("Error!")
                                     .setDescription("This channel is already set to another language!") // Message
-                                    .setColor(new Color(EmbedUtils.ERROR_COLOR)) // Color
+                                    .setColor(new Color(0xEB0000)) // Color
                                     .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON) // Footer
 
                                     .build()).build();
