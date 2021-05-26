@@ -1,12 +1,14 @@
 package net.ddns.rootrobo.RaspiBot.utils;
 
 import net.ddns.rootrobo.RaspiBot.Main;
+import net.dv8tion.jda.api.entities.User;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Random;
@@ -66,6 +68,14 @@ public class Utils {
             }
             return null;
         }
+    }
+
+    public static String getAvatar(User user) {
+        String avatar = user.getAvatarUrl();
+        if(avatar == null) {
+            avatar = user.getDefaultAvatarUrl();
+        }
+        return avatar;
     }
 
     public static String getGuildIcon(String guildID, String iconID) {
@@ -141,5 +151,15 @@ public class Utils {
             return Integer.MAX_VALUE;
         }
         return size;
+    }
+
+    // https://stackoverflow.com/questions/10245220/java-image-resize-maintain-aspect-ratio
+    public static BufferedImage resizeImage(BufferedImage src, int type, int width, int height) {
+        BufferedImage res = new BufferedImage(width, height, type);
+        Graphics2D g = res.createGraphics();
+        g.drawImage(src, 0, 0, width, height, null);
+        g.dispose();
+
+        return res;
     }
 }

@@ -1,5 +1,10 @@
 package net.ddns.rootrobo.RaspiBot.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Random;
 
 public class NetUtils {
@@ -64,5 +69,13 @@ public class NetUtils {
 
     private static String getRandomSystem() {
         return OPERATING_SYSTEMS[new Random().nextInt(OPERATING_SYSTEMS.length)];
+    }
+
+    public static InputStream getStreamFromUrl(String url) throws IOException {
+        URLConnection conn = new URL(url).openConnection();
+        conn.setUseCaches(true);
+        conn.setRequestProperty("User-Agent", NetUtils.getRandomUserAgent());
+        conn.connect();
+        return conn.getInputStream();
     }
 }
