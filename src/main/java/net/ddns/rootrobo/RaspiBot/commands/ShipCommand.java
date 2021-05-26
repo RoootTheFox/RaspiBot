@@ -28,7 +28,7 @@ public class ShipCommand implements Command {
                     "or "+Main.PREFIX+getName()+" @User @User").complete();
             return;
         }
-        
+
         User user0 = msg.getAuthor();
         User user1 = msg.getMentionedUsers().get(0);
 

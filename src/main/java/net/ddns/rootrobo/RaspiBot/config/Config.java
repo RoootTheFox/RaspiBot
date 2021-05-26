@@ -9,6 +9,7 @@ import java.io.*;
 public class Config {
     public String token;
     public String prefix;
+    public String alt_prefix;
     public String mysql_username;
     public String mysql_host;
     public String mysql_password;
@@ -18,6 +19,7 @@ public class Config {
     public Config() {
         this.token = "TOKEN";
         this.prefix = "/";
+        this.alt_prefix = "-";
         this.mysql_username = "MySQL USERNAME";
         this.mysql_host = "localhost";
         this.mysql_password = "MySQL PASSWORD";

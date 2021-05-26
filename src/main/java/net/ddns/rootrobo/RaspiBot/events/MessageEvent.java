@@ -27,8 +27,13 @@ public class MessageEvent extends ListenerAdapter {
         if(!(event.getChannelType() == ChannelType.TEXT)) return;
 
         String content = event.getMessage().getContentRaw();
-        if(content.startsWith(Main.PREFIX) && !(content.startsWith(Main.PREFIX+Main.PREFIX))) {
-            content = content.substring(content.indexOf(Main.PREFIX)+Main.PREFIX.length());
+        if((content.startsWith(Main.PREFIX) || content.startsWith(Main.ALT_PREFIX)) && !(content.startsWith(Main.PREFIX+Main.PREFIX))) {
+            if(content.startsWith(Main.PREFIX)) {
+                content = content.substring(content.indexOf(Main.PREFIX)+Main.PREFIX.length());
+            } else if(content.startsWith(Main.ALT_PREFIX)) {
+                content = content.substring(content.indexOf(Main.ALT_PREFIX)+Main.ALT_PREFIX.length());
+            }
+
             String[] args = content.split(" ");
             String command = args[0];
             args = Arrays.copyOfRange(args, 1, args.length);

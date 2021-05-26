@@ -28,6 +28,7 @@ public class Main {
     public static int COMMANDCOUNT = 0;
     public static int CONSOLECOMMANDCOUNT = 0;
     public static String PREFIX;
+    public static String ALT_PREFIX;
     public static String DEVELOPER_NAME;
     public static String DEVELOPER_ID = "512242962407882752";
     public static JDA bot = null;
@@ -92,6 +93,7 @@ public class Main {
         config = Config.getInstance(); // get config instance
         config.toFile("config.json"); // save config to create file if it doesn't exist
         PREFIX = config.prefix;
+        ALT_PREFIX = config.alt_prefix;
 
         Console.start(); // start listening for console input
 
