@@ -1,9 +1,12 @@
 package net.ddns.rootrobo.RaspiBot.commands;
 
+import de.tdrstudios.TDRUtils;
 import net.ddns.rootrobo.RaspiBot.Main;
+import net.ddns.rootrobo.RaspiBot.config.Config;
 import net.ddns.rootrobo.RaspiBot.stuff.Command;
 import net.ddns.rootrobo.RaspiBot.utils.NetUtils;
 import net.ddns.rootrobo.RaspiBot.utils.Utils;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -18,8 +21,18 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public class ShipCommand implements Command {
-    Random random = new Random();
+    private static final boolean allowFullPercentage = Config.getInstance().ship_allowfullpercentage;
+
+
+
+    ShipRandom random;
     HashMap<long[], long[]> ships = new HashMap<>();
+    private int percentage;
+
+    protected int getPercentage() {
+        return percentage;
+    }
+
     @Override
     public void run(Message msg, String[] args, Guild guild) {
         if(msg.getMentionedUsers().size() == 0) {
@@ -36,6 +49,16 @@ public class ShipCommand implements Command {
             user0 = msg.getMentionedUsers().get(0);
             user1 = msg.getMentionedUsers().get(1);
         }
+        if(user0.equals(user1)) {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setColor(Color.RED);
+            embedBuilder.setTitle("Error!");
+            embedBuilder.setDescription("You should search for more friends - don´t date yourself. That will go wrong! Trust us!");
+            msg.getChannel().sendMessage(embedBuilder.build());
+            return;
+        }
+
+        random = new ShipRandom(user0, user1);
 
         long id0 = user0.getIdLong();
         long id1 = user1.getIdLong();
@@ -47,12 +70,13 @@ public class ShipCommand implements Command {
 
         long[] ship = new long[]{ids.get(0), ids.get(1)};
 
-        int percentage;
+        // int percentage; // CodeStream Marker:9357205234
         if(isShipped(ship)) {
             percentage = getShip(ship);
         } else {
-            percentage = random.nextInt(101);
-            ships.put(ship, new long[]{System.currentTimeMillis(), percentage});
+            //percentage = random.nextInt(101); // CodeStream Marker:3209741231002
+            ships.put(ship, random.nextShip());
+            percentage = random.getLastPercentage();
         }
 
         //percentage = 69;
@@ -188,6 +212,7 @@ public class ShipCommand implements Command {
 
     private boolean isShipped(long[] ship) {
         Iterator<Map.Entry<long[], long[]>> it = ships.entrySet().iterator();
+
         while (it.hasNext()) {
             Map.Entry<long[], long[]> pair = it.next();
             long[] ids = pair.getKey();
@@ -241,5 +266,58 @@ public class ShipCommand implements Command {
         g2.dispose();
 
         return circleBuffer;
+    }
+
+    protected static class ShipRandom extends Random {
+
+        private User user1;
+        private User user2;
+
+        public User getUser1() {
+            return user1;
+        }
+
+        public User getUser2() {
+            return user2;
+        }
+
+        protected void setUser1(User user1) {
+            this.user1 = user1;
+        }
+        protected void setUser2(User user2) {
+            this.user2 = user2;
+        }
+
+        public ShipRandom(User user1, User user2){
+            setUser1(user1);
+            setUser2(user2);
+            super.setSeed(genSeed());
+        }
+
+
+        public long[] nextShip() {
+            int percentage;
+            if(allowFullPercentage)
+             percentage = nextInt(101);
+            else {
+                percentage = nextInt(100);
+                if(percentage == 0)
+                    percentage =  1;
+            }
+            lastPercentage = percentage;
+            return new long[]{System.currentTimeMillis(), percentage};
+        }
+
+        public long genSeed() {
+            long seed = getUser1().getIdLong() * getUser2().getIdLong();
+            seed = seed / TDRUtils.getLength(seed); // Make Number smaller...
+            return seed;
+        }
+
+        private int lastPercentage = 0;
+
+        public int getLastPercentage() {
+            return lastPercentage;
+        }
     }
 }
