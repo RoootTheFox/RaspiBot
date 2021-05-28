@@ -16,6 +16,8 @@ public class Config {
     public String mysql_database;
     public String topgg_token;
 
+    public boolean ship_allowfullpercentage;
+
     public Config() {
         this.token = "TOKEN";
         this.prefix = "/";
@@ -25,6 +27,7 @@ public class Config {
         this.mysql_password = "MySQL PASSWORD";
         this.mysql_database = "MySQL DATABASE";
         this.topgg_token = "TOPGG_TOKEN";
+        this.ship_allowfullpercentage = true;
     }
 
     private static Config instance;
