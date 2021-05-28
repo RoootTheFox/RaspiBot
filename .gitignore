@@ -1,4 +1,5 @@
 /gradle/
+/.gradle/
 /.idea/
 /build/
 /src/main/java/de/tdrstudios/TestClass.java
