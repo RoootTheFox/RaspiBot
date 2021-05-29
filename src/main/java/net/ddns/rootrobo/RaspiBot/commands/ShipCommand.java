@@ -52,7 +52,7 @@ public class ShipCommand implements Command {
         }
 
 
-        System.out.println(user0.getAsTag() + " " + percentage + "% " + user1.getAsTag());
+
 
         random = new ShipRandom(user0, user1);
 
@@ -94,7 +94,7 @@ public class ShipCommand implements Command {
             ships.put(ship, random.nextShip());
             percentage = random.getLastPercentage();
         }
-
+        System.out.println(user0.getAsTag() + " " + percentage + "% " + user1.getAsTag());
         //percentage = 69;
 
         InputStream base_stream;
