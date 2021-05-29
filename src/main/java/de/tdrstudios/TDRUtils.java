@@ -13,6 +13,9 @@ import java.io.InputStream;
  * This Utils are written by /TDRMinecraft
  */
 public class TDRUtils {
+
+    public static final int DEFAULT_BUFFER_SIZE = 8192;
+
     private final static BinService binService = new BinService(Main.bot.getGuildById(Config.getInstance().bin_guild).getTextChannelById(Config.getInstance().bin_channel));
 
     public static BinService getBinService() {
