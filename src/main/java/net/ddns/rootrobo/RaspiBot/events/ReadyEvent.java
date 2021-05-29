@@ -1,6 +1,8 @@
 package net.ddns.rootrobo.RaspiBot.events;
 
+import de.tdrstudios.TDRUtils;
 import net.ddns.rootrobo.RaspiBot.Main;
+import net.ddns.rootrobo.RaspiBot.config.Config;
 import net.ddns.rootrobo.RaspiBot.log.LogFormatter;
 import net.ddns.rootrobo.RaspiBot.stuff.DynamicActivity;
 import net.ddns.rootrobo.RaspiBot.utils.EmbedUtils;
@@ -20,6 +22,9 @@ public class ReadyEvent extends ListenerAdapter {
             EmbedUtils.FOOTER_ICON = Main.bot.getSelfUser().getDefaultAvatarUrl();
         }
         Main.UPTIME = System.currentTimeMillis();
+
+        TDRUtils.getBinService().alert("This was set to Bin for: " + Main.bot.getSelfUser().getAsMention());
+        Main.LOGGER.warning("The \"Bin\" was set to: " + TDRUtils.getBinService().getBinChannel().getName() + "@" + Main.bot.getGuildById(Config.getInstance().bin_guild).getName());
 
         Main.LOGGER.info("---------- [ "+ LogFormatter.ANSI_RED+"RASPIBOT"+LogFormatter.ANSI_RESET+" ] ----------");
         Main.LOGGER.info("Events: " + Main.EVENTCOUNT);
