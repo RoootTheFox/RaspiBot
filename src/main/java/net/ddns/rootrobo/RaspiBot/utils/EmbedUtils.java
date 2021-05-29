@@ -3,10 +3,15 @@ package net.ddns.rootrobo.RaspiBot.utils;
 import net.ddns.rootrobo.RaspiBot.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.EmbedType;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 
 import java.awt.*;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
 
 public class EmbedUtils {
     public static final int ERROR_COLOR = 15400960; //epic red
@@ -42,5 +47,92 @@ public class EmbedUtils {
                 .build();
     }
 
+    public static EmbedBuilder createEmbedBuilder(Color color) {
+        return new EmbedBuilder()
+                .setColor(color)
+                .setFooter(FOOTER_TEXT, FOOTER_ICON);
+    }
+
+    public static EmbedBuilder createMentionEmbedBuilder(Color color, User user) {
+        String profile = user.getAvatarUrl();
+        if(profile == null) profile = user.getDefaultAvatarUrl();
+        return new EmbedBuilder()
+                .setColor(color)
+                .setDescription(user.getAsMention())
+                .setThumbnail(profile)
+                .setFooter(FOOTER_TEXT, FOOTER_ICON);
+    }
+
+    public static DebugEmbedBuilder getDebugEmbed(String text, EmbedField[] fields) {
+        DebugEmbedBuilder embedBuilder = new DebugEmbedBuilder();
+        embedBuilder.setColor(Color.GRAY).setTitle("Debug").setDescription(text);
+        for (EmbedField embedField : fields) {
+            embedField.append(embedBuilder, false);
+        }
+        embedBuilder.setFooter(FOOTER_TEXT, FOOTER_ICON);
+        return embedBuilder;
+    }
+
+    public static DebugEmbedBuilder getDebugEmbed(String text) {
+        DebugEmbedBuilder embedBuilder = new DebugEmbedBuilder();
+        embedBuilder.setColor(Color.GRAY).setTitle("Debug").setDescription(text);
+        embedBuilder.setFooter(FOOTER_TEXT, FOOTER_ICON);
+        return embedBuilder;
+    }
+
+    public static void sendDebugEmbed(MessageEmbed embed, MessageChannel messageChannel) {
+        if(Main.enableDebugEmbeds)
+            messageChannel.sendMessage(embed);
+    }
+
+    public static class EmbedField{
+        private String name;
+        private String description;
+
+        public EmbedField(String name, String description) {
+            setName(name);
+            setDescription(description);
+        }
+        public String getName() {
+            return name;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+        public boolean append(EmbedBuilder embedBuilder, boolean inLine) {
+            embedBuilder.addField(getName(), getDescription(),inLine);
+            return true;
+        }
+    }
+
+    public static class DebugEmbedBuilder extends EmbedBuilder {
+        public void send(MessageChannel channel) {
+            System.out.println("[DEBUG]: " + toString());
+            //if(Main.enableDebugEmbeds) {
+                channel.sendMessage(build());
+            //}
+        }
+
+        @Override
+        public String toString() {
+            MessageEmbed embed = build();
+            StringBuilder builder = new StringBuilder();
+            builder.append(embed.getTitle() + " <> " + embed.getDescription() + "\n");
+            for (MessageEmbed.Field field : embed.getFields()) {
+                builder.append(field.getName() + "/" + field.getValue() + "\n");
+            }
+            builder.append(embed.getFooter().getText());
+            return builder.toString();
+        }
+    }
 
 }
