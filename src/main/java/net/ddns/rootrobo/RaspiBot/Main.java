@@ -39,6 +39,8 @@ public class Main {
     public static String MYSQL_PASS = "";
     public static String MYSQL_DB = "";
 
+    public static boolean enableDebugEmbeds = true;
+
     public static boolean READY = false;
     public static boolean USE_DBL = false;
     public static DiscordBotListAPI dbl_api;
