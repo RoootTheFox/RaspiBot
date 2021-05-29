@@ -3,15 +3,14 @@ package net.ddns.rootrobo.RaspiBot.utils;
 import net.ddns.rootrobo.RaspiBot.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.EmbedType;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 
 import java.awt.*;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public class EmbedUtils {
     public static final int ERROR_COLOR = 15400960; //epic red
@@ -85,6 +84,14 @@ public class EmbedUtils {
             messageChannel.sendMessage(embed);
     }
 
+    public static MessageEmbed sendTempTextEmbed(String title, String text, MessageChannel channel, int minutes) {
+        EmbedBuilder embedBuilder = new EmbedBuilder().setTitle(title).setDescription(text).setFooter(FOOTER_TEXT, FOOTER_ICON);
+        MessageEmbed embed = embedBuilder.build();
+        channel.sendMessage(embed).queue(message -> {
+            message.delete().queueAfter(minutes, TimeUnit.MINUTES);
+        });
+        return embed;
+    }
     public static MessageEmbed sendTextEmbed(String title, String text, MessageChannel channel) {
         EmbedBuilder embedBuilder = new EmbedBuilder().setTitle(title).setDescription(text).setFooter(FOOTER_TEXT, FOOTER_ICON);
         MessageEmbed embed = embedBuilder.build();
