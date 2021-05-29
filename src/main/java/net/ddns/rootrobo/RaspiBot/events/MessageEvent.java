@@ -12,11 +12,13 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 @SuppressWarnings("unused")
 public class MessageEvent extends ListenerAdapter {
@@ -61,7 +63,16 @@ public class MessageEvent extends ListenerAdapter {
                     }
                 }
                 Main.LOGGER.info(event.getAuthor().getAsTag() + " issued bot command: " + Main.PREFIX + content);
-                run.run(event.getMessage(), args, event.getGuild());
+                try {
+                    run.run(event.getMessage(), args, event.getGuild());
+                } catch (IOException e) {
+                    System.out.println("An Error happend while");
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
                 return;
             }
         }
