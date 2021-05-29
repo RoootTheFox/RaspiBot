@@ -17,6 +17,8 @@ public class Config {
     public String topgg_token;
 
     public boolean ship_allowfullpercentage;
+    public long bin_channel;
+    public long bin_guild;
 
     public Config() {
         this.token = "TOKEN";
@@ -28,6 +30,8 @@ public class Config {
         this.mysql_database = "MySQL DATABASE";
         this.topgg_token = "TOPGG_TOKEN";
         this.ship_allowfullpercentage = true;
+        this.bin_channel = 848149383059865600l;
+        this.bin_guild = 0l;
     }
 
     private static Config instance;
