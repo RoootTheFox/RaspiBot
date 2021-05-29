@@ -50,9 +50,14 @@ public class BinService {
     }
 
     public void alert(String message) {
-
-        EmbedUtils.sendTextEmbed("Bin - Alert", message, getBinChannel());
+        EmbedUtils.sendTempTextEmbed("Bin - Alert", message, getBinChannel(), 1); //TODO: Switch to 5min
         System.out.println("[BIN]: " + message);
+
+    }
+    public void alert(String message, int minutes) {
+        EmbedUtils.sendTempTextEmbed("Bin - Alert", message, getBinChannel(), minutes);
+        System.out.println("[BIN]: " + message);
+
     }
 
     protected static class DeleteThread implements Runnable {
