@@ -85,6 +85,13 @@ public class EmbedUtils {
             messageChannel.sendMessage(embed);
     }
 
+    public static MessageEmbed sendTextEmbed(String title, String text, MessageChannel channel) {
+        EmbedBuilder embedBuilder = new EmbedBuilder().setTitle(title).setDescription(text).setFooter(FOOTER_TEXT, FOOTER_ICON);
+        MessageEmbed embed = embedBuilder.build();
+        channel.sendMessage(embed).queue();
+        return embed;
+    }
+
     public static class EmbedField{
         private String name;
         private String description;
@@ -117,9 +124,9 @@ public class EmbedUtils {
     public static class DebugEmbedBuilder extends EmbedBuilder {
         public void send(MessageChannel channel) {
             System.out.println("[DEBUG]: " + toString());
-            //if(Main.enableDebugEmbeds) {
-                channel.sendMessage(build());
-            //}
+            if(Main.enableDebugEmbeds) {
+                channel.sendMessage(build()).queue();
+            }
         }
 
         @Override
@@ -134,5 +141,6 @@ public class EmbedUtils {
             return builder.toString();
         }
     }
+
 
 }

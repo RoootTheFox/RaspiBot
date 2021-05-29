@@ -2,6 +2,7 @@ package net.ddns.rootrobo.RaspiBot;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import de.tdrstudios.TDRUtils;
 import net.ddns.rootrobo.RaspiBot.config.Config;
 import net.ddns.rootrobo.RaspiBot.console.Console;
 import net.ddns.rootrobo.RaspiBot.log.LogFormatter;
@@ -127,6 +128,8 @@ public class Main {
         jda.setStatus(OnlineStatus.IDLE);
         jda.setActivity(Activity.playing("Booting up ..."));
 
+        Main.LOGGER.info("Debug Embeds: " + enableDebugEmbeds);
+
         try {
             bot = jda.build();
         } catch (LoginException e) {
@@ -134,6 +137,8 @@ public class Main {
             Main.LOGGER.severe("Could not perform login! Exiting ...");
             System.exit(1);
         }
+
+
 
         if(!(config.topgg_token.equals("") ||config.topgg_token.equals("TOPGG_TOKEN"))) {
             dbl_api = new DiscordBotListAPI.Builder()
@@ -143,7 +148,8 @@ public class Main {
             USE_DBL = true;
         }
 
-        DataSource.getConnection(); // connect to mysql
+
+                DataSource.getConnection(); // connect to mysql
     }
 
     public static void shutdown() {
