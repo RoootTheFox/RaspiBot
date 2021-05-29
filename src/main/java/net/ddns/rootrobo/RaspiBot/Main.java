@@ -30,7 +30,7 @@ public class Main {
     public static String PREFIX;
     public static String ALT_PREFIX;
     public static String DEVELOPER_NAME;
-    public static String DEVELOPER_ID = "512242962407882752";
+    public static String DEVELOPER_ID = "351973117872046080"; //ID set to: TDR_Minecraft - This should be an Array!
     public static JDA bot = null;
     public static long UPTIME = 0;
     public static Version VERSION = new Version("0.0.0");
