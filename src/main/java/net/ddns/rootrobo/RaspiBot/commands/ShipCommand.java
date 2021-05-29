@@ -4,13 +4,13 @@ import de.tdrstudios.TDRUtils;
 import net.ddns.rootrobo.RaspiBot.Main;
 import net.ddns.rootrobo.RaspiBot.config.Config;
 import net.ddns.rootrobo.RaspiBot.stuff.Command;
+import net.ddns.rootrobo.RaspiBot.utils.EmbedUtils;
 import net.ddns.rootrobo.RaspiBot.utils.NetUtils;
 import net.ddns.rootrobo.RaspiBot.utils.Utils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.internal.requests.Route;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,6 +18,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 @SuppressWarnings("unused")
 public class ShipCommand implements Command {
@@ -34,7 +35,7 @@ public class ShipCommand implements Command {
     }
 
     @Override
-    public void run(Message msg, String[] args, Guild guild) {
+    public void run(Message msg, String[] args, Guild guild) throws IOException, ExecutionException, InterruptedException {
         if(msg.getMentionedUsers().size() == 0) {
             msg.getChannel().sendMessage(
                     "Usage: "+Main.PREFIX+getName()+" @user"+"\n"+
@@ -49,14 +50,9 @@ public class ShipCommand implements Command {
             user0 = msg.getMentionedUsers().get(0);
             user1 = msg.getMentionedUsers().get(1);
         }
-        if(user0.equals(user1)) {
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setColor(Color.RED);
-            embedBuilder.setTitle("Error!");
-            embedBuilder.setDescription("You should search for more friends - don´t date yourself. That will go wrong! Trust us!");
-            msg.getChannel().sendMessage(embedBuilder.build());
-            return;
-        }
+
+
+        System.out.println(user0.getAsTag() + " " + percentage + "% " + user1.getAsTag());
 
         random = new ShipRandom(user0, user1);
 
@@ -67,6 +63,26 @@ public class ShipCommand implements Command {
         ids.add(id0);
         ids.add(id1);
         ids.sort(null);
+
+        if(id0 == id1) {
+            EmbedBuilder embedBuilder = EmbedUtils.createMentionEmbedBuilder(Color.RED, user0);
+            embedBuilder.setTitle("Error!");
+            embedBuilder.appendDescription("You should search for more friends - dont date yourself. That will go wrong! Trust us!");
+
+            msg.getChannel().sendMessage(embedBuilder.build()).queue();
+            return;
+        }
+        if((id0 == msg.getAuthor().getIdLong() && id1 == Main.bot.getSelfUser().getIdLong()) || (id1 == msg.getAuthor().getIdLong() && id0 == Main.bot.getSelfUser().getIdLong())) {
+            EmbedBuilder embedBuilder = new EmbedBuilder().setColor(Color.GREEN).setTitle("I :hearts: you");
+            embedBuilder.setThumbnail(Main.bot.getSelfUser().getAvatarUrl());
+            embedBuilder.setDescription("Im your Bot and its my task to love you at **every** time!");
+            embedBuilder.setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON);
+            msg.getChannel().sendMessage(embedBuilder.build()).queue();
+            return;
+        }
+        //EmbedUtils.DebugEmbedBuilder debugEmbedBuilder =  EmbedUtils.getDebugEmbed("ShipInfo:", new EmbedUtils.EmbedField[]{new EmbedUtils.EmbedField("Ship0", user0.getAsMention()), new EmbedUtils.EmbedField("Ship1", user1.getAsMention())});
+        //debugEmbedBuilder.send(msg.getChannel());
+
 
         long[] ship = new long[]{ids.get(0), ids.get(1)};
 
@@ -187,7 +203,17 @@ public class ShipCommand implements Command {
             return;
         }
         InputStream is = new ByteArrayInputStream(out.toByteArray());
-        msg.getChannel().sendFile(is, "ship.png").complete();
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setColor(Color.ORANGE).setTitle(Main.bot.getSelfUser().getName() + "s Dating Service");
+        embedBuilder.setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON);
+        File file = new File("temp.png");
+        TDRUtils.copyInputStreamToFile(is, file);
+        String url = TDRUtils.getBinService().getBinFromFile(file);
+        TDRUtils.getBinService().alert("URL: " + url);
+        embedBuilder.setImage(url);
+      //  msg.getChannel().sendFile(is, "ship.png").complete();
+        msg.getChannel().sendMessage(embedBuilder.build()).queue();
+
     }
 
     @Override
