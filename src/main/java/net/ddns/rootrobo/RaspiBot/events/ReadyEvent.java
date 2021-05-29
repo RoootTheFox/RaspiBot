@@ -40,6 +40,9 @@ public class ReadyEvent extends ListenerAdapter {
 
         DynamicActivity.start();
 
+        TDRUtils.getBinService().clean();
+        Main.LOGGER.info("Bin was cleard....");
+
         // (debug) uncomment to get a list of guilds
         //for (Guild guild : Main.bot.getGuilds()) { System.out.println("M:"+guild.getMemberCount()+" N:"+guild.getName()+" I:"+guild.getId()); }
     }
