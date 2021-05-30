@@ -16,8 +16,8 @@ public class InviteCommand implements Command {
     @Override
     public void run(Message msg, String[] args, Guild guild) {
         MessageEmbed embed = new EmbedBuilder()
-                .setTitle(Main.bot.getSelfUser().getName())
-                .setDescription("Thanks for using RaspiBot! To invite the bot to your server, click :link: [this link]("+inviteLink+").")
+                .setTitle("Invite " +Main.bot.getSelfUser().getName())
+                .setDescription("Thanks for using " + Main.bot.getSelfUser().getName()+ "! To invite the bot to your server, click :link: [this link](" + Main.bot.getInviteUrl(Permission.ADMINISTRATOR) + ").")
                 .setColor(new Color(0, 255, 0))
                 .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON)
 
