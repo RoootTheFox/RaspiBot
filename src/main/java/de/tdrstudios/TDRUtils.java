@@ -1,6 +1,7 @@
 package de.tdrstudios;
 
 import de.tdrstudios.image.BinService;
+import de.tdrstudios.jarargs.ArgumentManager;
 import net.ddns.rootrobo.RaspiBot.Main;
 import net.ddns.rootrobo.RaspiBot.config.Config;
 
@@ -17,6 +18,7 @@ public class TDRUtils {
     public static final int DEFAULT_BUFFER_SIZE = 8192;
 
     private final static BinService binService = new BinService(Main.bot.getGuildById(Config.getInstance().bin_guild).getTextChannelById(Config.getInstance().bin_channel));
+
 
     public static BinService getBinService() {
         return binService;

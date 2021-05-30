@@ -3,6 +3,7 @@ package net.ddns.rootrobo.RaspiBot;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.tdrstudios.TDRUtils;
+import de.tdrstudios.jarargs.ArgumentManager;
 import net.ddns.rootrobo.RaspiBot.config.Config;
 import net.ddns.rootrobo.RaspiBot.console.Console;
 import net.ddns.rootrobo.RaspiBot.log.LogFormatter;
@@ -20,6 +21,7 @@ import org.discordbots.api.client.DiscordBotListAPI;
 import javax.security.auth.login.LoginException;
 import java.io.*;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
@@ -46,12 +48,17 @@ public class Main {
     public static boolean USE_DBL = false;
     public static DiscordBotListAPI dbl_api;
 
+    public static String[] JAVA_ARGUMENTS;
+    public static ArgumentManager ARGUMENT_MANAGER;
+
     protected static Config config = new Config();
 
     public static Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) throws SQLException {
-        System.out.println("Starting ...");
+        JAVA_ARGUMENTS = args;
+        ARGUMENT_MANAGER = new ArgumentManager(JAVA_ARGUMENTS);
+        System.out.println("Starting the application with the following arguments: " + ARGUMENT_MANAGER.getJarArguments());
         ConsoleHandler handler = new ConsoleHandler();
         handler.setFormatter(new LogFormatter());
         LOGGER.setUseParentHandlers(false);

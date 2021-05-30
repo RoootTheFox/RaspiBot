@@ -2,9 +2,12 @@ package net.ddns.rootrobo.RaspiBot.commands;
 
 import net.ddns.rootrobo.RaspiBot.Main;
 import net.ddns.rootrobo.RaspiBot.stuff.Command;
+import net.ddns.rootrobo.RaspiBot.utils.EmbedUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
+
+import java.util.logging.Level;
 
 @SuppressWarnings("unused")
 public class StopCommand implements Command {
@@ -13,8 +16,9 @@ public class StopCommand implements Command {
         if (!(msg.getAuthor().getId().equals(Main.DEVELOPER_ID))) {
             return;
         }
-
-        msg.getChannel().sendMessage("bot stopped.").complete();
+        EmbedUtils.sendTextEmbed(Main.bot.getSelfUser().getName(), "Stopped the Bot!\n Goodbye!" , msg.getChannel());
+        Main.LOGGER.log(Level.INFO, "The Bot was stopped by " + msg.getAuthor().getAsTag() + "!");
+        //msg.getChannel().sendMessage("bot stopped.").complete();
         Main.shutdown();
     }
 
