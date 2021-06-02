@@ -153,13 +153,11 @@ public class Utils {
         return size;
     }
 
-    // https://stackoverflow.com/questions/10245220/java-image-resize-maintain-aspect-ratio
-    public static BufferedImage resizeImage(BufferedImage src, int type, int width, int height) {
-        BufferedImage res = new BufferedImage(width, height, type);
-        Graphics2D g = res.createGraphics();
-        g.drawImage(src, 0, 0, width, height, null);
-        g.dispose();
-
-        return res;
+    // https://www.baeldung.com/java-resize-image
+    public static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
+        Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
+        BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
+        outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
+        return outputImage;
     }
 }

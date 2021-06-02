@@ -53,7 +53,7 @@ public class StealEmoteCommand implements Command {
                             } catch (IOException ignored) {
                                 continue;
                             }
-                            if(response == null) continue;;
+                            if(response == null) continue;
                             if(response.getStatusLine().getStatusCode() == 200) {
                                 urls.add("https://cdn.discordapp.com/emojis/"+arg+".gif");
                             }
@@ -70,7 +70,7 @@ public class StealEmoteCommand implements Command {
                         } catch (IOException ignored) {
                             continue;
                         }
-                        if(response == null) continue;;
+                        if(response == null) continue;
                         if(response.getStatusLine().getStatusCode() == 200) {
                             urls.add("https://cdn.discordapp.com/emojis/"+arg+".png");
                         }
@@ -85,7 +85,7 @@ public class StealEmoteCommand implements Command {
                 } catch (IOException ignored) {
                     continue;
                 }
-                if(response == null) continue;;
+                if(response == null) continue;
                 if(response.getStatusLine().getStatusCode() == 200) {
                     urls.add("https://cdn.discordapp.com/emojis/"+arg+".gif");
                 } else {
@@ -96,7 +96,7 @@ public class StealEmoteCommand implements Command {
                     } catch (IOException ignored) {
                         continue;
                     }
-                    if(response2 == null) continue;;
+                    if(response2 == null) continue;
                     if(response2.getStatusLine().getStatusCode() == 200) {
                         urls.add("https://cdn.discordapp.com/emojis/"+arg+".png");
                     }

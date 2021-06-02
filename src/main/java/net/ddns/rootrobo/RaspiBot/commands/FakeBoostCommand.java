@@ -7,7 +7,6 @@ import net.dv8tion.jda.api.entities.Message;
 
 import java.util.Calendar;
 
-
 @SuppressWarnings("unused")
 public class FakeBoostCommand implements Command {
     @Override

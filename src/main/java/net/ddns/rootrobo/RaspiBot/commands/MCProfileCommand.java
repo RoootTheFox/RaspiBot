@@ -36,14 +36,14 @@ public class MCProfileCommand implements Command {
         } catch (IOException ignored) {
         }
         BufferedReader rd = null;
-        StringBuffer result;
+        StringBuilder result;
         try {
             assert response != null;
             rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        result = new StringBuffer();
+        result = new StringBuilder();
         String line;
         try {
             try {
@@ -70,14 +70,14 @@ public class MCProfileCommand implements Command {
         } catch (IOException ignored) {
         }
         BufferedReader rd2 = null;
-        StringBuffer result2;
+        StringBuilder result2;
         try {
             assert response2 != null;
             rd2 = new BufferedReader(new InputStreamReader(response2.getEntity().getContent()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        result2 = new StringBuffer();
+        result2 = new StringBuilder();
         String line2;
         try {
             try {

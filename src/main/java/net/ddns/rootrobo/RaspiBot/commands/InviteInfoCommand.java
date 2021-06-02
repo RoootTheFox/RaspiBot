@@ -41,14 +41,14 @@ public class InviteInfoCommand implements Command {
         } catch (IOException ignored) {
         }
         BufferedReader rd = null;
-        StringBuffer result;
+        StringBuilder result;
         try {
             assert response != null;
             rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        result = new StringBuffer();
+        result = new StringBuilder();
         String line;
         try {
             try {

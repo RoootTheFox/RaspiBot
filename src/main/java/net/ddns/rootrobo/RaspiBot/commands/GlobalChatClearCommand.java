@@ -58,6 +58,7 @@ public class GlobalChatClearCommand implements Command {
         try (Connection con = DataSource.getConnection();
              PreparedStatement pst = con.prepareStatement(SQL_QUERY2);
              ResultSet rs = pst.executeQuery()) {
+            //noinspection LoopStatementThatDoesntLoop
             while (rs.next()) {
                 String globalchat_english = rs.getString("channel_english");
                 String globalchat_german = rs.getString("channel_german");

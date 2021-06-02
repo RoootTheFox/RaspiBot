@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,8 +21,24 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
 public class GlobalChat {
+    private static final String MOD_PREFIX = "[Mod] ";
+    private static final int MOD_COLOR = 65535;
+
+    private static final String ADMIN_PREFIX = "[Admin] ";
+    private static final int ADMIN_COLOR = 65280;
+
+    private static final String OWNER_PREFIX = "[Owner] ";
+    private static final int OWNER_COLOR = 65280;
+
+    private static final int DEFAULT_COLOR = 7506394;
+    private static final int CONSOLE_COLOR = 16711680;
+
     public static void send(Message msg, String text, String language, String imgURL, boolean isMod, boolean isAdmin, boolean isOwner, boolean isConsole) {
-        if(msg.getReferencedMessage() != null) {
+        if(msg == null) {
+            isConsole = true;
+        }
+
+        if(msg != null && msg.getReferencedMessage() != null) {
             Message ref = msg.getReferencedMessage();
             StringBuilder ref_text = new StringBuilder(ref.getContentRaw());
             String refauthor = null;
@@ -29,15 +46,29 @@ public class GlobalChat {
                 for (MessageEmbed embed : ref.getEmbeds()) {
                     ref_text.append("\n").append(embed.getDescription());
                     if(embed.getAuthor() != null) {
+                        int ref_color = embed.getColorRaw();
                         refauthor = embed.getAuthor().getName();
                         assert refauthor != null;
-                        refauthor = "@"+refauthor.substring(refauthor.indexOf("]")+2);
+
+                        if(ref_color == MOD_COLOR && refauthor.startsWith(MOD_PREFIX)) {
+                            refauthor = "@"+refauthor.substring(MOD_PREFIX.length());
+                        }
+                        if(ref_color == ADMIN_COLOR && refauthor.startsWith(ADMIN_PREFIX)) {
+                            refauthor = "@"+refauthor.substring(ADMIN_PREFIX.length());
+                        }
+                        if(ref_color == OWNER_COLOR && refauthor.startsWith(OWNER_PREFIX)) {
+                            refauthor = "@"+refauthor.substring(OWNER_PREFIX.length());
+                        }
+                        if(ref_color == DEFAULT_COLOR) {
+                            refauthor = "@"+refauthor;
+                        }
+
                     }
                 }
             }
 
             if(ref_text.toString().startsWith("\n")) {
-                ref_text = new StringBuilder(ref_text.substring(2));
+                ref_text = new StringBuilder(ref_text.substring(1));
             }
 
             if (refauthor != null && refauthor.equals("")) {
@@ -84,28 +115,25 @@ public class GlobalChat {
                             }
                         }
 
-                        int color = 7506394;
+                        int color = DEFAULT_COLOR;
                         String author;
                         if (!isConsole) {
                             author = msg.getAuthor().getAsTag();
+                            if (isOwner) {
+                                author = OWNER_PREFIX + author;
+                                color = OWNER_COLOR;
+                            } else if (isAdmin) {
+                                author = ADMIN_PREFIX + author;
+                                color = ADMIN_COLOR;
+                            } else if (isMod) {
+                                author = MOD_PREFIX + author;
+                                color = MOD_COLOR;
+                            }
                         } else {
                             author = "CONSOLE";
+                            color = CONSOLE_COLOR;
                         }
-                        if (isMod) {
-                            author = "[Mod] " + msg.getAuthor().getAsTag();
-                            color = 65535;
-                        }
-                        if (isAdmin) {
-                            author = "[Admin] " + msg.getAuthor().getAsTag();
-                            color = 65280;
-                        }
-                        if (isOwner) {
-                            author = "[Owner] " + msg.getAuthor().getAsTag();
-                            color = 65280;
-                        }
-                        if (isConsole) {
-                            color = 16711680;
-                        }
+
                         EmbedBuilder embed = new EmbedBuilder()
                                 .setDescription(text) // Message
                                 .setColor(new Color(color)) // Color

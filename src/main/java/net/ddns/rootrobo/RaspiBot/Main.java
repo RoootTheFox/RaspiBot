@@ -62,10 +62,10 @@ public class Main {
             LOGGER.info("Starting RaspiBot v"+VERSION.getVersionString());
         } else {
             BufferedReader rd;
-            StringBuffer result;
+            StringBuilder result;
             rd = new BufferedReader(new InputStreamReader(botJsonStream));
 
-            result = new StringBuffer();
+            result = new StringBuilder();
             String line;
 
             try {

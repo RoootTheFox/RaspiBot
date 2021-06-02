@@ -9,6 +9,9 @@ import net.dv8tion.jda.api.entities.Message;
 
 import java.util.HashMap;
 
+// this is a debug command used to load new commands when building the bot
+// while its running in debug mode and reloading classes
+@SuppressWarnings("unused")
 public class ReloadCommand implements Command {
     @Override
     public void run(Message msg, String[] args, Guild guild) {

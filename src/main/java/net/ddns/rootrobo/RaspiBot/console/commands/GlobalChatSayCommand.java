@@ -1,5 +1,6 @@
 package net.ddns.rootrobo.RaspiBot.console.commands;
 
+import net.ddns.rootrobo.RaspiBot.Main;
 import net.ddns.rootrobo.RaspiBot.stuff.ConsoleCommand;
 import net.ddns.rootrobo.RaspiBot.utils.GlobalChat;
 
@@ -10,6 +11,11 @@ import java.util.Arrays;
 public class GlobalChatSayCommand implements ConsoleCommand {
     @Override
     public void run(String command, String[] args) {
+        if(args.length < 1) {
+            Main.LOGGER.warning("You have to specify the language!");
+            Main.LOGGER.warning("Example: say EN Hello world!");
+            return;
+        }
         String language = args[0];
         args = Arrays.copyOfRange(args, 1, args.length);
         String text = String.join(" ", args);

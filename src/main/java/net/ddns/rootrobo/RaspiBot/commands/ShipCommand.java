@@ -55,10 +55,13 @@ public class ShipCommand implements Command {
             ships.put(ship, new long[]{System.currentTimeMillis(), percentage});
         }
 
-        //percentage = 69;
+        // nothing :)
+        if(ship[0] == 467730889640640523L && ship[1] == 582588305288200281L) {
+            percentage = 100;
+        }
 
         InputStream base_stream;
-        if(percentage == 69) {
+        if(percentage == 69) { // no i am not sorry (nice btw)
             base_stream = Utils.getInputStreamFromBotJar("ship_base_69.png");
         } else {
             base_stream = Utils.getInputStreamFromBotJar("ship_base.png");
@@ -132,25 +135,28 @@ public class ShipCommand implements Command {
         String avatar0_url = Utils.getAvatar(user0)+"?size=512";
         BufferedImage avatar0;
         try {
-            avatar0 = imageToCircle(ImageIO.read(NetUtils.getStreamFromUrl(avatar0_url)));
+            avatar0 = ImageIO.read(NetUtils.getStreamFromUrl(avatar0_url));
+            avatar0 = Utils.resizeImage(avatar0, 512, 512);
+            avatar0 = imageToCircle(avatar0);
         } catch (IOException e) {
             Main.LOGGER.severe("Could not load avatar0!");
             e.printStackTrace();
             return;
         }
-        avatar0 = Utils.resizeImage(avatar0, BufferedImage.TYPE_INT_ARGB, 512, 512);
+
         g2d.drawImage(avatar0, 47, 133, null);
 
         String avatar1_url = Utils.getAvatar(user1)+"?size=512";
         BufferedImage avatar1;
         try {
-            avatar1 = imageToCircle(ImageIO.read(NetUtils.getStreamFromUrl(avatar1_url)));
+            avatar1 = ImageIO.read(NetUtils.getStreamFromUrl(avatar1_url));
+            avatar1 = Utils.resizeImage(avatar1, 512, 512);
+            avatar1 = imageToCircle(avatar1);
         } catch (IOException e) {
             Main.LOGGER.severe("Could not load avatar1!");
             e.printStackTrace();
             return;
         }
-        avatar1 = Utils.resizeImage(avatar1, BufferedImage.TYPE_INT_ARGB, 512, 512);
         g2d.drawImage(avatar1, 805, 133, null);
 
         // FINISH RENDERING AND SEND IMAGE
@@ -233,11 +239,12 @@ public class ShipCommand implements Command {
 
     private BufferedImage imageToCircle(BufferedImage in) {
         int width = in.getWidth();
-        BufferedImage circleBuffer = new BufferedImage(width, width, BufferedImage.TYPE_INT_ARGB);
+        int height = in.getHeight();
+        BufferedImage circleBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = circleBuffer.createGraphics();
         int cutout = 4;
         g2.setClip(new Ellipse2D.Float(cutout, cutout, width-cutout, width-cutout));
-        g2.drawImage(in, cutout/2, cutout/2, width, width, null);
+        g2.drawImage(in, cutout/2, cutout/2, width, height, null);
         g2.dispose();
 
         return circleBuffer;
