@@ -8,3 +8,4 @@ The default alternative Prefix for this Bot is `-`.<br>
 
 This bot will likely switch to using Discord's new Slash Commands when JDA adds support for them.
 For the time being, you can put a space in front of Commands to avoid other bot's Slash Commands from being run instead.
+Update: it seems like JDA added support for them, I will look into it and possibly implement it when I get some time.
