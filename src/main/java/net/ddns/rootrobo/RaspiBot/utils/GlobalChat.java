@@ -4,14 +4,12 @@ import net.ddns.rootrobo.RaspiBot.Main;
 import net.ddns.rootrobo.RaspiBot.mysql.DataSource;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 import javax.annotation.Nullable;
+import javax.rmi.CORBA.Util;
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class GlobalChat {
     private static final String MOD_PREFIX = "[Mod] ";
@@ -173,13 +172,21 @@ public class GlobalChat {
                 .replace("\u200B", "") // remove zero width spaces
                 .replace(" ", "")
                 .replace(",", "."); // convert commas to dots
-        String finalMSG = event.getMessage().getContentRaw()
+        StringBuilder finalMSG = new StringBuilder(event.getMessage().getContentRaw()
                 .replace("\u200B", "")
                 .replace("@everyone", "@\u200Beveryone")
-                .replace("@here", "@\u200Bhere");
+                .replace("@here", "@\u200Bhere"));
+
+        if(!(event.getMessage().getType() == MessageType.DEFAULT ||
+                event.getMessage().getType() == MessageType.APPLICATION_COMMAND ||
+                event.getMessage().getType() == MessageType.INLINE_REPLY)) {
+            System.out.println("invalid message, type: "+event.getMessage().getType().name());
+            return;
+        }
+
 
         try {
-            event.getMessage().delete().queue();
+            event.getMessage().delete().queueAfter(Utils.getPing()+100, TimeUnit.MILLISECONDS);
         } catch (ErrorResponseException ignored) {
         }
 
@@ -225,7 +232,45 @@ public class GlobalChat {
             }
         }
 
-        GlobalChat.send(event.getMessage(), finalMSG, language, imgURL, isMod, isAdmin, isOwner, false);
+        if(event.getMessage().getEmbeds().size() > 0) {
+            for (MessageEmbed embed : event.getMessage().getEmbeds()) {
+                if(embed.getImage() != null && imgURL == null) {
+                    imgURL = embed.getImage().getUrl();
+
+                    if(embed.getAuthor() != null) {
+                        if(embed.getAuthor().getName() != null && !embed.getAuthor().getName().equals("")) {
+                            finalMSG.append("\n**").append(embed.getAuthor().getName()).append("**");
+                        }
+                    }
+                    if(embed.getTitle() != null) {
+                        if(!embed.getTitle().equals("")) {
+                            finalMSG.append("\n**").append(embed.getTitle()).append("**");
+                        }
+                    }
+                }
+                if(embed.getDescription() != null && !embed.getDescription().equals("")) {
+                    finalMSG.append(embed.getDescription()).append("\n");
+                }
+
+                if(embed.getFields().size() > 0) {
+                    for (MessageEmbed.Field field : embed.getFields()) {
+                        if(field.getName() != null && field.getValue() != null && !(field.getValue().equals("") || field.getValue().equals(""))) {
+                            finalMSG.append("**__").append(field.getName()).append("__**").append("\n");
+                            finalMSG.append(field.getValue()).append("\n");
+                        }
+                    }
+                }
+            }
+        }
+
+        String finalMsg_str = MessageUtils.replaceMentions(finalMSG.toString());
+        finalMsg_str = MessageUtils.replaceChannelMentions(finalMsg_str);
+
+        if(finalMsg_str.endsWith("\n")) {
+            finalMsg_str = finalMsg_str.substring(0, finalMsg_str.length()-1);
+        }
+
+        GlobalChat.send(event.getMessage(), finalMsg_str, language, imgURL, isMod, isAdmin, isOwner, false);
     }
 
     public static String getLanguageByCode(String lang_code) {

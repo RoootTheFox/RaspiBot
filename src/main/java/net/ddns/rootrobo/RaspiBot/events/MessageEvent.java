@@ -22,8 +22,8 @@ import java.util.*;
 public class MessageEvent extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if(event.getAuthor().getId().equals(Main.bot.getSelfUser().getId())) return;
-        if(!(event.getChannelType() == ChannelType.TEXT)) return;
+        if(event.getAuthor().getId().equals(Main.bot.getSelfUser().getId())) return; // ignore this bot
+        if(!(event.getChannelType() == ChannelType.TEXT)) return; // we only want text channels
 
         String content = event.getMessage().getContentRaw();
         if((content.startsWith(Main.PREFIX) || content.startsWith(Main.ALT_PREFIX)) && !(content.startsWith(Main.PREFIX+Main.PREFIX))) {
