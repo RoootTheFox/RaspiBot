@@ -133,7 +133,7 @@ public class MessageUtils {
                     VoiceChannel voiceChannel = Main.bot.getVoiceChannelById(id);
                     if(voiceChannel != null) {
                         String original = "<#"+id+">";
-                        String name = "\uD83D\uDD08"+voiceChannel.getName();
+                        String name = "\\\uD83D\uDD08"+voiceChannel.getName();
                         replacements.add(new String[]{original, name});
                     }
                 }
