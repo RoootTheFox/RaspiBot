@@ -25,7 +25,7 @@ public class FakeBoostCommand implements Command {
     public String getName() { return "boost"; }
 
     @Override
-    public String getDescription() { return "BOOST YOUR SERVER FOR FREE 1000% REAL NO FAKE WORKING "+Calendar.getInstance().get(Calendar.YEAR); }
+    public String getDescription() { return "BOOST YOUR SERVER FOR FREE 1000% REAL NO FAKE WORKING "+Calendar.getInstance().get(Calendar.YEAR) + " NO VIRUS"; }
 
     @Override
     public String[] getAliases() { return new String[0]; }

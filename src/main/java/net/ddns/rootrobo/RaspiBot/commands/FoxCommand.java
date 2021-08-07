@@ -74,7 +74,7 @@ public class FoxCommand implements Command {
     public String getName() { return "fox"; }
 
     @Override
-    public String getDescription() { return "Foxes! :3"; }
+    public String getDescription() { return "Sends some cute images of Foxes! :3"; }
 
     @Override
     public String[] getAliases() { return new String[]{"foxxy"}; }

@@ -119,7 +119,7 @@ public class StealEmoteCommand implements Command {
     public String getName() { return "stealemote"; }
 
     @Override
-    public String getDescription() { return null; }
+    public String getDescription() { return "Gives you the link to download an emote."; }
 
     @Override
     public String[] getAliases() { return new String[]{"stealemoji", "stealemotes", "downloademote", "downloademoji"}; }

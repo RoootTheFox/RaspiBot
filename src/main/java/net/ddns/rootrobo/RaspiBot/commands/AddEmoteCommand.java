@@ -268,7 +268,7 @@ public class AddEmoteCommand implements Command {
     public String getName() { return "addemote"; }
 
     @Override
-    public String getDescription() { return null; }
+    public String getDescription() { return "Lets you easily add emotes to your server."; }
 
     @Override
     public String[] getAliases() { return new String[]{"addemoji", "addemojis", "addemotes"}; }

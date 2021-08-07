@@ -29,7 +29,7 @@ public class InviteCommand implements Command {
     public String getName() { return "invite"; }
 
     @Override
-    public String getDescription() { return "Get the URL to invite this bot to your server."; }
+    public String getDescription() { return "Get the link to invite this bot to your server."; }
 
     @Override
     public String[] getAliases() { return new String[0]; }

@@ -74,7 +74,7 @@ public class CatCommand implements Command {
     public String getName() { return "cat"; }
 
     @Override
-    public String getDescription() { return "CATS!!!"; }
+    public String getDescription() { return "Sends some cat pics"; }
 
     @Override
     public String[] getAliases() { return new String[0]; }

@@ -24,10 +24,11 @@ public class MCSkinCommand implements Command {
             msg.getChannel().sendMessage("Please specify a username!").complete();
             return;
         }
+
         String username = args[0];
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet request = new HttpGet("https://namemc.com/profile/"+username);
-        request.setHeader("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; LOL; rv:1.8.1.6) Gecko/20070802 SeaMonkey/1.1.4"); // random user agent lol
+        request.setHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:90.0) Gecko/20100101 Firefox/90.0"); // random user agent lol
 
         HttpResponse response = null;
         try {
@@ -66,7 +67,9 @@ public class MCSkinCommand implements Command {
         username = username.substring(0, username.indexOf(" |"));
 
         if(skinID.equals("")) {
-            msg.getChannel().sendMessage("This player doesn't exist or doesn't have a skin!").complete();
+            // player doesn't exist (or error, fuck you namemc :v)
+            msg.getChannel().sendMessage("This player doesn't exist or does not have a skin!\n" +
+                    "(it may also be possible that NameMC is blocking our requests)").complete();
             return;
         }
 

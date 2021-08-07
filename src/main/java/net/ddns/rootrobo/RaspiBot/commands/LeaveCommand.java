@@ -85,7 +85,7 @@ public class LeaveCommand implements Command {
     public String getName() { return "leave"; }
 
     @Override
-    public String getDescription() { return "welcome set channel | welcome message MESSAGE"; }
+    public String getDescription() { return "leave set channel | leave message MESSAGE"; }
 
     @Override
     public String[] getAliases() { return new String[0]; }

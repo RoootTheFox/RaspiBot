@@ -21,7 +21,7 @@ public class NetherPortalCommand implements Command {
     public String getName() { return "portal"; }
 
     @Override
-    public String getDescription() { return null; }
+    public String getDescription() { return "Sends a Minecraft Nether Portal. idk why"; }
 
     @Override
     public String[] getAliases() { return new String[]{"netherportal"}; }

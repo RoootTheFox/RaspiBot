@@ -48,7 +48,7 @@ public class ClearCommand implements Command {
     public String getName() { return "purge"; }
 
     @Override
-    public String getDescription() { return "Clear, I guess"; }
+    public String getDescription() { return "Purges a specified amount (or 100) messages in the current channel."; }
 
     @Override
     public String[] getAliases() { return new String[]{"clear"}; }

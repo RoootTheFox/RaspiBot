@@ -79,7 +79,7 @@ public class BanCommand implements Command {
     public String getName() { return "ban"; }
 
     @Override
-    public String getDescription() { return null; }
+    public String getDescription() { return "Ban Members from the server."; }
 
     @Override
     public String[] getAliases() { return new String[0]; }

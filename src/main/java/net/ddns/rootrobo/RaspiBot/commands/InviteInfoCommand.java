@@ -158,7 +158,7 @@ public class InviteInfoCommand implements Command {
     }
 
     @Override
-    public String getDescription() { return "(WIP) Displays information about an invite link."; }
+    public String getDescription() { return "(very WIP!) Displays information about an invite link."; }
 
     @Override
     public String[] getAliases() { return new String[0]; }

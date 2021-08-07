@@ -74,7 +74,7 @@ public class MemeCommand implements Command {
     public String getName() { return "meme"; }
 
     @Override
-    public String getDescription() { return null; }
+    public String getDescription() { return "Sends some memes."; }
 
     @Override
     public String[] getAliases() { return new String[0]; }

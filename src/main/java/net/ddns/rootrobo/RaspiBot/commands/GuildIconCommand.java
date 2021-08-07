@@ -27,7 +27,7 @@ public class GuildIconCommand implements Command {
     public String getName() { return "guild-icon"; }
 
     @Override
-    public String getDescription() { return "Returns the server icon in the highest possible quality."; }
+    public String getDescription() { return "Sends the server icon in the highest possible quality."; }
 
     @Override
     public String[] getAliases() { return new String[]{"guildicon", "server-icon", "servericon"}; }

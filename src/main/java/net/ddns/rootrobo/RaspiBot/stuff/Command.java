@@ -10,4 +10,7 @@ public interface Command {
     String getDescription();
     String[] getAliases();
     Permission getPermission();
+    default boolean getIsPublic() {
+        return true;
+    }
 }

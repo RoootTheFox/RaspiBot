@@ -115,4 +115,9 @@ public class GlobalChatModCommand implements Command {
 
     @Override
     public Permission getPermission() { return null; }
+
+    @Override
+    public boolean getIsPublic() {
+        return false;
+    }
 }

@@ -69,7 +69,7 @@ public class GlobalChatModListCommand implements Command {
     public String getName() { return "gcmodlist"; }
 
     @Override
-    public String getDescription() { return null; }
+    public String getDescription() { return "List Global Chat Moderators."; }
 
     @Override
     public String[] getAliases() { return new String[0]; }

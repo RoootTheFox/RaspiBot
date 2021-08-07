@@ -108,7 +108,7 @@ public class GlobalChatUnbanCommand implements Command {
     public String getName() { return "gcunban"; }
 
     @Override
-    public String getDescription() { return null; }
+    public String getDescription() { return "Lets Global Chat Mods unban people from using the Global Chat."; }
 
     @Override
     public String[] getAliases() { return new String[0]; }

@@ -18,7 +18,7 @@ public class SayCommand implements Command {
     public String getName() { return "say"; }
 
     @Override
-    public String getDescription() { return "Make the bot say something."; }
+    public String getDescription() { return "Make the bot say what you want."; }
 
     @Override
     public String[] getAliases() { return new String[0]; }

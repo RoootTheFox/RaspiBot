@@ -51,4 +51,9 @@ public class ReloadCommand implements Command {
     public Permission getPermission() {
         return null;
     }
+
+    @Override
+    public boolean getIsPublic() {
+        return false;
+    }
 }

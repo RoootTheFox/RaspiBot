@@ -79,7 +79,7 @@ public class KickCommand implements Command {
     public String getName() { return "kick"; }
 
     @Override
-    public String getDescription() { return null; }
+    public String getDescription() { return "Kick Members from the server."; }
 
     @Override
     public String[] getAliases() { return new String[0]; }

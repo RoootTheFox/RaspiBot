@@ -46,7 +46,7 @@ public class RemoveEmoteCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "Delete Emojis";
+        return "Deletes Emotes from the server.";
     }
 
     @Override

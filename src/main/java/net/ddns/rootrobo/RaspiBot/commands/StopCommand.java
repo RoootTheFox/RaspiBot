@@ -22,11 +22,16 @@ public class StopCommand implements Command {
     public String getName() { return "stop"; }
 
     @Override
-    public String getDescription() { return null; }
+    public String getDescription() { return "Stops the bot."; }
 
     @Override
     public String[] getAliases() { return new String[0]; }
 
     @Override
     public Permission getPermission() { return null; }
+
+    @Override
+    public boolean getIsPublic() {
+        return false;
+    }
 }

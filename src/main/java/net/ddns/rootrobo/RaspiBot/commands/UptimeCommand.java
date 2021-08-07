@@ -34,7 +34,7 @@ public class UptimeCommand implements Command {
     public String getName() { return "uptime"; }
 
     @Override
-    public String getDescription() { return "broken uptime command"; }
+    public String getDescription() { return "Shows the uptime of the bot."; }
 
     @Override
     public String[] getAliases() { return new String[0]; }
