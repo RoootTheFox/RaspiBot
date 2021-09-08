@@ -8,8 +8,6 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
-import javax.annotation.Nullable;
-import javax.rmi.CORBA.Util;
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -221,10 +219,12 @@ public class GlobalChat {
             return;
         }
 
-        if (MessageUtils.containsLink(strippedMSG) && !(isAdmin || isMod)) {
+        if (MessageUtils.containsLink(strippedMSG) && !(isAdmin || isMod ||
+                ( event.getAuthor().getDiscriminator().equals("0000") && event.getGuild().getOwnerId().equals(Main.DEVELOPER_ID)))) {
             event.getTextChannel().sendMessage(event.getAuthor().getAsTag() + ", don't share links here!").complete();
             return;
         }
+
         String imgURL = null;
         if (event.getMessage().getAttachments().size() > 0) {
             if (event.getMessage().getAttachments().get(0).isImage()) {
@@ -233,7 +233,9 @@ public class GlobalChat {
         }
 
         if(event.getMessage().getEmbeds().size() > 0) {
+            finalMSG.append("\n");
             for (MessageEmbed embed : event.getMessage().getEmbeds()) {
+                finalMSG.append("```");
                 if(embed.getImage() != null && imgURL == null) {
                     imgURL = embed.getImage().getUrl();
 
@@ -260,7 +262,9 @@ public class GlobalChat {
                         }
                     }
                 }
+                finalMSG.append("```");
             }
+
         }
 
         String finalMsg_str = MessageUtils.replaceMentions(finalMSG.toString());
