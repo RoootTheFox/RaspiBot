@@ -25,13 +25,13 @@ public class ConsoleCommandManager {
     }
 
     public static void register() {
-        String pkg = "net.ddns.rootrobo.RaspiBot.console.commands";
+        String pkg = "net.ddns.foxsquad.RaspiBot.console.commands";
         try (ScanResult scanResult =
                      new ClassGraph()
                              .acceptPackages(pkg)
                              .enableClassInfo()
                              .scan()) {
-            for (ClassInfo classInfo : scanResult.getClassesImplementing("net.ddns.rootrobo.RaspiBot.stuff.ConsoleCommand")) {
+            for (ClassInfo classInfo : scanResult.getClassesImplementing("net.ddns.foxsquad.RaspiBot.stuff.ConsoleCommand")) {
                 @SuppressWarnings("unchecked") // classes implementing ConsoleCommand always implement ConsoleCommand
                 Class<? extends ConsoleCommand> cmdClass = (Class<? extends ConsoleCommand>) classInfo.loadClass();
                 ConsoleCommand cmd = cmdClass.newInstance();

@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.JDABuilder;
 public class EventManager {
     private static int eventcount = 0;
     public static void registerEvents(JDABuilder jda) {
-        String pkg = "net.ddns.rootrobo.RaspiBot.events";
+        String pkg = "net.ddns.foxsquad.RaspiBot.events";
         try (ScanResult scanResult =
                      new ClassGraph()
                              .acceptPackages(pkg)

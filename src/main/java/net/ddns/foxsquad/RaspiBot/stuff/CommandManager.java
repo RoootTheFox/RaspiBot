@@ -33,7 +33,7 @@ public class CommandManager {
                      new ClassGraph()
                              .enableClassInfo()
                              .scan()) {
-            for (ClassInfo classInfo : scanResult.getClassesImplementing("net.ddns.rootrobo.RaspiBot.stuff.Command")) {
+            for (ClassInfo classInfo : scanResult.getClassesImplementing("net.ddns.foxsquad.RaspiBot.stuff.Command")) {
                 @SuppressWarnings("unchecked")
                 Class<? extends Command> cmdClass = (Class<? extends Command>) classInfo.loadClass();
                 Command cmd = cmdClass.newInstance();
