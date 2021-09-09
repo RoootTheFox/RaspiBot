@@ -8,7 +8,6 @@ import net.ddns.foxsquad.RaspiBot.mysql.DataSource;
 import net.ddns.foxsquad.RaspiBot.stuff.*;
 import net.ddns.foxsquad.RaspiBot.utils.Utils;
 import net.ddns.foxsquad.RaspiBot.console.Console;
-import net.ddns.rootrobo.RaspiBot.stuff.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
