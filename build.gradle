@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'net.ddns.rootrobo'
+group 'net.ddns.foxsquad'
 version '0.0.3'
 
 repositories {
@@ -28,7 +28,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'net.ddns.rootrobo.RaspiBot.Main'
+        attributes 'Main-Class': 'net.ddns.foxsquad.RaspiBot.Main'
     }
 
     doFirst {
