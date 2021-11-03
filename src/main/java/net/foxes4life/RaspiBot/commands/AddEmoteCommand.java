@@ -234,7 +234,8 @@ public class AddEmoteCommand implements Command {
 
         StringBuilder out = new StringBuilder();
         for (String url : urls) {
-            String name = url.substring(url.indexOf("/"));
+            System.out.println(url);
+            String name = url.substring(url.lastIndexOf("/")+1);
             name = name.substring(0, name.indexOf(".")-1);
 
             try {
