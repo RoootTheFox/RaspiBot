@@ -235,7 +235,7 @@ public class AddEmoteCommand implements Command {
         StringBuilder out = new StringBuilder();
         for (String url : urls) {
             String name = url.substring(url.indexOf("/"));
-            name = "u_"+name.substring(0, name.indexOf(".")-1);
+            name = name.substring(0, name.indexOf(".")-1);
 
             try {
                 CloseableHttpClient c = HttpClients.createDefault();
