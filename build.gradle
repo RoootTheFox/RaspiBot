@@ -28,7 +28,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'net.ddns.foxsquad.RaspiBot.Main'
+        attributes 'Main-Class': 'net.foxes4life.RaspiBot.RaspiBot.Main'
     }
 
     doFirst {
