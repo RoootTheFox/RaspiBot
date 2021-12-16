@@ -26,7 +26,6 @@ public class AvatarCommand implements Command {
             }
         }
 
-
         String avatarURL = u.getAvatarUrl();
         if(avatarURL == null) avatarURL = u.getDefaultAvatarUrl();
         avatarURL = avatarURL+"?size=2048";
