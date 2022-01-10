@@ -38,7 +38,7 @@ public class GlobalChatUnbanCommand implements Command {
         }
 
         if(!(isMod || isAdmin)) {
-            Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+            Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                     .setTitle("No Permissions")
                     .setDescription("You need to be a Global Chat Moderator or higher to use this command!")
                     .setThumbnail(authorAvatarURL)
@@ -71,7 +71,7 @@ public class GlobalChatUnbanCommand implements Command {
                 target = Main.bot.getUserByTag(args[0]);
             }
             if(target == null) {
-                Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+                Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                         .setTitle("Error")
                         .setDescription("Could not find the User you are looking for.")
                         .setThumbnail(authorAvatarURL)
@@ -91,7 +91,7 @@ public class GlobalChatUnbanCommand implements Command {
             PreparedStatement pst = DataSource.getConnection().prepareStatement(SQL_QUERY2);
             pst.executeQuery();
 
-            Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+            Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                     .setTitle("Success")
                     .setDescription(target.getAsTag() +" has been unbanned from the Global Chat.")
                     .setThumbnail(AvatarURL)

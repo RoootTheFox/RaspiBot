@@ -30,10 +30,10 @@ public class KickCommand implements Command {
         }
 
         if(!guild.getSelfMember().canInteract(target)) {
-            msg.getChannel().sendMessage(EmbedUtils.getSelfNoPermissionEmbed(msg.getAuthor(), "to kick that user!")).complete();
+            msg.getChannel().sendMessage(EmbedUtils.embedToMessage(EmbedUtils.getSelfNoPermissionEmbed(msg.getAuthor(), "to kick that user!"))).complete();
         } else {
             if(!Objects.requireNonNull(msg.getMember()).canInteract(target)) {
-                Message errorMSG = new MessageBuilder().setEmbed(new EmbedBuilder()
+                Message errorMSG = new MessageBuilder().setEmbeds(new EmbedBuilder()
                         .setTitle("Error")
                         .setColor(EmbedUtils.ERROR_COLOR)
                         .setDescription("You can't interact with that member!")
@@ -61,7 +61,7 @@ public class KickCommand implements Command {
             Member finalTarget = target;
             guild.kick(target, reason[0]).queue(
                     success -> {
-                        Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+                        Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                                 .setTitle(MessageUtils.CHECK_MARK+" Success!")
                                 .setDescription(msg.getAuthor().getAsMention()+" kicked "+ finalTarget.getUser().getAsTag()+" for "+reason[0])
                                 .setThumbnail(finalAvatarURL)

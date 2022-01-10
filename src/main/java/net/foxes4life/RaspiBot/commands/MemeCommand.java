@@ -61,7 +61,7 @@ public class MemeCommand implements Command {
         String memeTitle = memeJson.get("title").getAsString();
         String memeImgURL = memeJson.get("url").getAsString();
 
-        Message message = new MessageBuilder().setEmbed(new EmbedBuilder()
+        Message message = new MessageBuilder().setEmbeds(new EmbedBuilder()
                 .setAuthor(memeTitle, memeLink)
                 .setImage(memeImgURL)
                 .setColor(Utils.getRandomColor())

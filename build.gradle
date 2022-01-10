@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compile ('net.dv8tion:JDA:4.2.1_253')
+    compile ('net.dv8tion:JDA:5.0.0-alpha.4')
     compile 'io.github.classgraph:classgraph:4.8.105'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'

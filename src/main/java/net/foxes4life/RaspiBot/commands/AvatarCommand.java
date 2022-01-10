@@ -30,7 +30,7 @@ public class AvatarCommand implements Command {
         if(avatarURL == null) avatarURL = u.getDefaultAvatarUrl();
         avatarURL = avatarURL+"?size=2048";
 
-        Message message = new MessageBuilder().setEmbed(new EmbedBuilder()
+        Message message = new MessageBuilder().setEmbeds(new EmbedBuilder()
                 .setTitle(u.getName()+"'s Avatar")
                 .setImage(avatarURL)
                 .setColor(Utils.getRandomColor())

@@ -21,7 +21,7 @@ public class UptimeCommand implements Command {
         int seconds = uptime[3];
 
         String up = days+" days\n"+hours+" hours\n"+minutes+" minutes\n"+seconds+" seconds\n";
-        Message uptimeMessage = new MessageBuilder().setEmbed(new EmbedBuilder()
+        Message uptimeMessage = new MessageBuilder().setEmbeds(new EmbedBuilder()
                 .setTitle("Uptime")
                 .setDescription(up)
                 .setColor(Utils.getRandomColor())

@@ -24,7 +24,7 @@ public class InviteCommand implements Command {
                 .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON)
                 .build();
 
-        msg.getChannel().sendMessage(embed).complete();
+        msg.getChannel().sendMessage(EmbedUtils.embedToMessage(embed)).complete();
     }
 
     @Override

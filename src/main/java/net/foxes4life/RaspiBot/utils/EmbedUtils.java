@@ -1,5 +1,7 @@
 package net.foxes4life.RaspiBot.utils;
 
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.foxes4life.RaspiBot.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -42,5 +44,7 @@ public class EmbedUtils {
                 .build();
     }
 
-
+    public static Message embedToMessage(MessageEmbed embed) {
+        return new MessageBuilder().setEmbeds(embed).build();
+    }
 }

@@ -274,5 +274,5 @@ public class AddEmoteCommand implements Command {
     public String[] getAliases() { return new String[]{"addemoji", "addemojis", "addemotes"}; }
 
     @Override
-    public Permission getPermission() { return Permission.MANAGE_EMOTES; }
+    public Permission getPermission() { return Permission.MANAGE_EMOTES_AND_STICKERS; }
 }

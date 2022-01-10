@@ -84,7 +84,7 @@ public class DynamicActivity {
                             .replace("{guilds}", String.valueOf(guildCount))
                             .replace("{channels}", String.valueOf(channelCount))
                             .replace("{users}", String.valueOf(userCount));
-                    Activity.ActivityType type = Activity.ActivityType.valueOf(activity.get("type").toUpperCase().replace("PLAYING", "DEFAULT"));
+                    Activity.ActivityType type = Activity.ActivityType.valueOf(activity.get("type").toUpperCase());
                     Main.bot.getPresence().setActivity(Activity.of(type, text));
 
                     // also update DBL info

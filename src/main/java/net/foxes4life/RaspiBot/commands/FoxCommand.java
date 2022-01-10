@@ -61,7 +61,7 @@ public class FoxCommand implements Command {
         String postTitle = jsonObject.get("title").getAsString();
         String postImageURL = jsonObject.get("url").getAsString();
 
-        Message message = new MessageBuilder().setEmbed(new EmbedBuilder()
+        Message message = new MessageBuilder().setEmbeds(new EmbedBuilder()
                 .setAuthor(postTitle, postLink)
                 .setImage(postImageURL)
                 .setColor(Utils.getRandomColor())

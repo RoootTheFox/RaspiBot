@@ -147,7 +147,7 @@ public class GlobalChat {
                             embed.setImage(imgURL);
                         }
 
-                        Message send = new MessageBuilder().setEmbed(embed.build()).build();
+                        Message send = new MessageBuilder().setEmbeds(embed.build()).build();
                         new java.util.Timer().schedule(
                                 new java.util.TimerTask() {
                                     @Override

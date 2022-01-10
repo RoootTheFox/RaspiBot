@@ -55,7 +55,7 @@ public class GlobalChatModListCommand implements Command {
             modlist.append(entry).append("\n");
         }
 
-        Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+        Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                 .setTitle("Global Chat Moderators ("+mods.size()+")")
                 .setDescription(modlist.toString())
                 .setColor(new Color(EmbedUtils.SUCCESS_COLOR))

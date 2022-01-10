@@ -42,7 +42,7 @@ public class GlobalChatClearCommand implements Command {
         }
 
         if(!(isMod || isAdmin)) {
-            Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+            Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                     .setTitle("No Permissions")
                     .setDescription("You need to be a Global Chat Moderator or higher to use this command!")
                     .setThumbnail(authorAvatarURL)

@@ -35,7 +35,7 @@ public class GlobalChatUnmodCommand implements Command {
         }
 
         if(!(isOwner)) {
-            Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+            Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                     .setTitle("No Permissions")
                     .setDescription("You need to be a GlobalChat Owner to run this command!")
                     .setThumbnail(authorAvatarURL)
@@ -68,7 +68,7 @@ public class GlobalChatUnmodCommand implements Command {
                 target = Main.bot.getUserByTag(args[0]);
             }
             if(target == null) {
-                Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+                Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                         .setTitle("Error")
                         .setDescription("Could not find the User you are looking for.")
                         .setThumbnail(authorAvatarURL)
@@ -89,7 +89,7 @@ public class GlobalChatUnmodCommand implements Command {
             PreparedStatement pst = DataSource.getConnection().prepareStatement(SQL_QUERY2);
             pst.executeQuery();
 
-            Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+            Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                     .setTitle("Success")
                     .setDescription(target.getAsTag() +" is no longer a GlobalChat Moderator.")
                     .setThumbnail(AvatarURL)

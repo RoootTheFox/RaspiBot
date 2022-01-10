@@ -14,13 +14,13 @@ public class GuildIconCommand implements Command {
         msg.getChannel().sendTyping().queue();
 
         if(guild.getIconUrl() == null) {
-            msg.getChannel().sendMessage(new EmbedBuilder()
+            msg.getChannel().sendMessage(EmbedUtils.embedToMessage(new EmbedBuilder()
                     .setTitle("No icon")
                     .setDescription("This server doesn't have an icon!")
-                    .setColor(EmbedUtils.ERROR_COLOR).build()).queue();
+                    .setColor(EmbedUtils.ERROR_COLOR).build())).queue();
             return;
         }
-        msg.getChannel().sendMessage(new EmbedBuilder().setImage(guild.getIconUrl()+"?size=2048").build()).queue();
+        msg.getChannel().sendMessage(EmbedUtils.embedToMessage(new EmbedBuilder().setImage(guild.getIconUrl()+"?size=2048").build())).queue();
     }
 
     @Override

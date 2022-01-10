@@ -1,5 +1,6 @@
 package net.foxes4life.RaspiBot.commands;
 
+import net.dv8tion.jda.api.MessageBuilder;
 import net.foxes4life.RaspiBot.Main;
 import net.foxes4life.RaspiBot.stuff.Command;
 import net.foxes4life.RaspiBot.utils.EmbedUtils;
@@ -19,13 +20,12 @@ public class BugCommand implements Command {
         String reporter = msg.getAuthor().getAsTag();
         String bug = String.join(" ", args);
         if(bug.length() < 20) {
-            MessageEmbed error = new EmbedBuilder()
+            msg.getChannel().sendMessage(EmbedUtils.embedToMessage(new EmbedBuilder()
                     .setTitle("Error")
                     .setColor(new Color(EmbedUtils.ERROR_COLOR))
                     .setDescription("A bug report has to be at least 20 characters long!")
                     .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON)
-                    .build();
-            msg.getChannel().sendMessage(error).complete();
+                    .build())).complete();
             return;
         }
 
@@ -37,14 +37,14 @@ public class BugCommand implements Command {
                 .build();
 
         try {
-            Objects.requireNonNull(Main.bot.getUserById(Main.DEVELOPER_ID)).openPrivateChannel().complete().sendMessage(embed).complete();
+            Objects.requireNonNull(Main.bot.getUserById(Main.DEVELOPER_ID)).openPrivateChannel().complete().sendMessage(EmbedUtils.embedToMessage(embed)).complete();
             MessageEmbed success = new EmbedBuilder()
                     .setTitle("Bug reported")
                     .setColor(new Color(EmbedUtils.SUCCESS_COLOR))
                     .setDescription("Your bug was successfully reported! I will try to fix the issue as soon as possible! Thank you!")
                     .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON)
                     .build();
-            msg.getChannel().sendMessage(success).complete();
+            msg.getChannel().sendMessage(EmbedUtils.embedToMessage(success)).complete();
         } catch (Exception ignored) {
             MessageEmbed embed1 = new EmbedBuilder()
                     .setTitle("Error")
@@ -52,7 +52,7 @@ public class BugCommand implements Command {
                     .setDescription("Your Bug could NOT be reported! Please DM this error to the developer of this bot!")
                     .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON)
                     .build();
-            msg.getChannel().sendMessage(embed1).complete();
+            msg.getChannel().sendMessage(EmbedUtils.embedToMessage(embed1)).complete();
         }
     }
 

@@ -148,7 +148,7 @@ public class InviteInfoCommand implements Command {
         if(GuildDesc != null) E.addField("Description", GuildDesc, true);
 
         // send embed pog
-        Message e = new MessageBuilder().setEmbed(E.build()).build();
+        Message e = new MessageBuilder().setEmbeds(E.build()).build();
 
         msg.getChannel().sendMessage(e).complete();
     }

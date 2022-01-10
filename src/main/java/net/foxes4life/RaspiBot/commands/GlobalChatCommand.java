@@ -43,7 +43,7 @@ public class GlobalChatCommand implements Command {
                             Connection con = DataSource.getConnection();
                             PreparedStatement pst = con.prepareStatement(SQL_QUERY);
                             pst.executeQuery();
-                            Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+                            Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                                     .setTitle("Success!")
                                     .setDescription("The global chat channel (<#"+success.getId()+">) with language `"+language+"` has been successfully created!") // Message
                                     .setColor(new Color(EmbedUtils.SUCCESS_COLOR)) // Color
@@ -69,7 +69,7 @@ public class GlobalChatCommand implements Command {
             System.out.println(language);
             TextChannel globalChannel = msg.getMentionedChannels().get(0);
             if(globalChannel == null) {
-                Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+                Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                         .setTitle("Error!")
                         .setDescription("Could not set the global Chat Channel! Please tag a valid channel\n("+ Main.PREFIX+this.getName()+" set #channel") // Message
                         .setColor(new Color(EmbedUtils.ERROR_COLOR)) // Color
@@ -91,7 +91,7 @@ public class GlobalChatCommand implements Command {
                     for (String lang : languages) {
                         String check = rs.getString("channel_"+lang);
                         if(check.equals(globalChannel.getId())) {
-                            Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+                            Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                                     .setTitle("Error!")
                                     .setDescription("This channel is already set to another language!") // Message
                                     .setColor(new Color(0xEB0000)) // Color
@@ -111,7 +111,7 @@ public class GlobalChatCommand implements Command {
                 Connection con = DataSource.getConnection();
                 PreparedStatement pst = con.prepareStatement(SQL_QUERY);
                 pst.executeQuery();
-                Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+                Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                         .setTitle("Success!")
                         .setDescription("The global chat channel (`"+language+"`) has been successfully set to <#"+globalChannel.getId()+">!") // Message
                         .setColor(new Color(EmbedUtils.SUCCESS_COLOR)) // Color

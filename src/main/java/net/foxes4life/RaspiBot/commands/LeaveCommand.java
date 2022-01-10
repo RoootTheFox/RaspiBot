@@ -30,7 +30,7 @@ public class LeaveCommand implements Command {
         if(args[0].equalsIgnoreCase("channel")) {
             TextChannel leaveChannel = msg.getMentionedChannels().get(0);
             if(leaveChannel == null) {
-                Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+                Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                         .setTitle("Error!")
                         .setDescription("Could not set the leave message Channel! Please tag a valid channel\n("+ Main.PREFIX+this.getName()+" set #channel") // Message
                         .setColor(new Color(EmbedUtils.ERROR_COLOR)) // Color
@@ -46,7 +46,7 @@ public class LeaveCommand implements Command {
                 Connection con = DataSource.getConnection();
                 PreparedStatement pst = con.prepareStatement(SQL_QUERY);
                 pst.executeQuery();
-                Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+                Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                         .setTitle("Success!")
                         .setDescription("The leave message channel has been successfully set to <#"+leaveChannel.getId()+">!") // Message
                         .setColor(new Color(EmbedUtils.SUCCESS_COLOR)) // Color
@@ -67,7 +67,7 @@ public class LeaveCommand implements Command {
                 Connection con = DataSource.getConnection();
                 PreparedStatement pst = con.prepareStatement(SQL_QUERY);
                 pst.executeQuery();
-                Message embed = new MessageBuilder().setEmbed(new EmbedBuilder()
+                Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                         .setTitle("Success!")
                         .setDescription("The leave message has been successfully set to `"+text+"`!") // Message
                         .setColor(new Color(0x00FF00)) // Color

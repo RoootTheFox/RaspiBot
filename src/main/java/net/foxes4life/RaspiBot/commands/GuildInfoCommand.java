@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.foxes4life.RaspiBot.utils.EmbedUtils;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -28,7 +29,7 @@ public class GuildInfoCommand implements Command {
         info.addField("Name", guild.getName(), true);
         info.addField("ID", guild.getId(), true);
         info.addField("Owner", Objects.requireNonNull(guild.getOwner()).getUser().getAsTag(), true);
-        info.addField("Region", guild.getRegion().getEmoji()+" "+guild.getRegion().getName(), true);
+        // region is no longer supported by discord
         info.addField("Total members", String.valueOf(guild.getMemberCount()), true);
         info.addField("Humans", String.valueOf(members.size()), true);
         info.addField("Bots", String.valueOf(guild.getMemberCount()-members.size()), true);
@@ -39,7 +40,7 @@ public class GuildInfoCommand implements Command {
         info.addField("Creation date", guild.getTimeCreated().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")), true);
         info.setThumbnail(guild.getIconUrl());
 
-        msg.getChannel().sendMessage(info.build()).complete();
+        msg.getChannel().sendMessage(EmbedUtils.embedToMessage(info.build())).complete();
     }
 
     @Override

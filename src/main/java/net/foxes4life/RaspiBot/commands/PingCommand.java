@@ -2,6 +2,7 @@ package net.foxes4life.RaspiBot.commands;
 
 import net.foxes4life.RaspiBot.Main;
 import net.foxes4life.RaspiBot.stuff.Command;
+import net.foxes4life.RaspiBot.utils.EmbedUtils;
 import net.foxes4life.RaspiBot.utils.Utils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -39,7 +40,7 @@ public class PingCommand implements Command {
         out.addField("Uptime", up, false);
         out.setColor(new Color(0xFF6AFF47, true));
 
-        msg.getTextChannel().sendMessage(out.build()).queue();
+        msg.getTextChannel().sendMessage(EmbedUtils.embedToMessage(out.build())).queue();
     }
 
     @Override

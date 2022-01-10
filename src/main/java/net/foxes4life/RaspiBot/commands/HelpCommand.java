@@ -53,7 +53,7 @@ public class HelpCommand implements Command {
         for (int i = 0; i < embeds.size(); i++) {
             EmbedBuilder eb2 = embeds.get(i);
             eb2.setTitle(eb2.build().getTitle()+" (Page "+(i+1)+")");
-            msg.getChannel().sendMessage(eb2.build()).queue();
+            msg.getChannel().sendMessage(EmbedUtils.embedToMessage(eb2.build())).queue();
         }
     }
 

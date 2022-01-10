@@ -26,7 +26,7 @@ public class ClearCommand implements Command {
         }
 
         if(maxMSGs < 1 || 100 < maxMSGs) {
-            Message errorMSG = new MessageBuilder().setEmbed(new EmbedBuilder()
+            Message errorMSG = new MessageBuilder().setEmbeds(new EmbedBuilder()
                     .setTitle("Error")
                     .setColor(EmbedUtils.ERROR_COLOR)
                     .setDescription("The amount of messages to delete has to be between 1 and 100.")

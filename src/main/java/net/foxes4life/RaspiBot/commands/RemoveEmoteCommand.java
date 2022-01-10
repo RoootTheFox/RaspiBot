@@ -56,6 +56,6 @@ public class RemoveEmoteCommand implements Command {
 
     @Override
     public Permission getPermission() {
-        return Permission.MANAGE_EMOTES;
+        return Permission.MANAGE_EMOTES_AND_STICKERS;
     }
 }

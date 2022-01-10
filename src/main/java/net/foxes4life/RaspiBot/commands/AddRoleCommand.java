@@ -23,21 +23,21 @@ public class AddRoleCommand implements Command {
         //Member target = msg.getMentionedMembers().get(0);
 
         if(targets.size() == 0) {
-            Message errorMSG = new MessageBuilder().setEmbed(new EmbedBuilder()
+            Message errorMSG = EmbedUtils.embedToMessage(new EmbedBuilder()
                     .setTitle("Error")
                     .setColor(EmbedUtils.ERROR_COLOR)
                     .setDescription("Please specify the member you want to add a role to!")
-                    .build()).build();
+                    .build());
             msg.getChannel().sendMessage(errorMSG).complete();
             return;
         }
 
         if(roles.size() == 0) {
-            Message errorMSG = new MessageBuilder().setEmbed(new EmbedBuilder()
+            Message errorMSG = EmbedUtils.embedToMessage(new EmbedBuilder()
                     .setTitle("Error")
                     .setColor(EmbedUtils.ERROR_COLOR)
                     .setDescription("Please specify a role you want to add!")
-                    .build()).build();
+                    .build());
             msg.getChannel().sendMessage(errorMSG).complete();
             return;
         }
@@ -54,7 +54,7 @@ public class AddRoleCommand implements Command {
             inaccessible.append(ia_target.getAsMention()).append("\n");
         }
         if(inaccessible_targets.size() != 0) {
-            Message errorMSG = new MessageBuilder().setEmbed(new EmbedBuilder()
+            Message errorMSG = new MessageBuilder().setEmbeds(new EmbedBuilder()
                     .setTitle("Error")
                     .setColor(EmbedUtils.ERROR_COLOR)
                     .setDescription("You can't interact with the following member(s): \n"+inaccessible)
@@ -72,7 +72,7 @@ public class AddRoleCommand implements Command {
             inaccessible.append(ia_target.getAsMention()).append("\n");
         }
         if(inaccessible_targets.size() != 0) {
-            Message errorMSG = new MessageBuilder().setEmbed(new EmbedBuilder()
+            Message errorMSG = new MessageBuilder().setEmbeds(new EmbedBuilder()
                     .setTitle("Error")
                     .setColor(EmbedUtils.ERROR_COLOR)
                     .setDescription("I can't interact with the following member(s): \n"+inaccessible)
@@ -93,7 +93,7 @@ public class AddRoleCommand implements Command {
             inaccessible.append(ia_role.getAsMention()).append("\n");
         }
         if(inaccessible_roles.size() != 0) {
-            Message errorMSG = new MessageBuilder().setEmbed(new EmbedBuilder()
+            Message errorMSG = new MessageBuilder().setEmbeds(new EmbedBuilder()
                     .setTitle("Error")
                     .setColor(EmbedUtils.ERROR_COLOR)
                     .setDescription("You can't interact with the following role(s): \n"+inaccessible)
@@ -111,7 +111,7 @@ public class AddRoleCommand implements Command {
             inaccessible.append(ia_role.getAsMention()).append("\n");
         }
         if(inaccessible_roles.size() != 0) {
-            Message errorMSG = new MessageBuilder().setEmbed(new EmbedBuilder()
+            Message errorMSG = new MessageBuilder().setEmbeds(new EmbedBuilder()
                     .setTitle("Error")
                     .setColor(EmbedUtils.ERROR_COLOR)
                     .setDescription("I can't interact with the following role(s): \n"+inaccessible)
@@ -138,7 +138,7 @@ public class AddRoleCommand implements Command {
             }
         }
 
-        Message successMSG = new MessageBuilder().setEmbed(new EmbedBuilder()
+        Message successMSG = new MessageBuilder().setEmbeds(new EmbedBuilder()
                 .setTitle(MessageUtils.CHECK_MARK+" Success")
                 .setColor(EmbedUtils.SUCCESS_COLOR)
                 .setDescription("Successfully completed "+ added +" role additions.")
