@@ -23,8 +23,9 @@ import java.util.Arrays;
 public class WelcomeCommand implements Command { // looking at this class... yeah i think i should just recode the bot
     @Override
     public void run(Message msg, String[] args, Guild guild) {
+        String help = "message <MSG> | channel <#channel> | role <@role>";
         if(args.length == 0) {
-            msg.getTextChannel().sendMessage("message <MSG> | channel <#channel>").complete();
+            msg.getTextChannel().sendMessage(help).complete();
             return;
         }
 
@@ -59,6 +60,7 @@ public class WelcomeCommand implements Command { // looking at this class... yea
                 msg.getTextChannel().sendMessage(embed).queue();
             } catch (SQLException ignored) {
             }
+            return;
         }
 
         if(args[0].equalsIgnoreCase("message")) {
@@ -80,6 +82,7 @@ public class WelcomeCommand implements Command { // looking at this class... yea
                 msg.getTextChannel().sendMessage(embed).queue();
             } catch (SQLException ignored) {
             }
+            return;
         }
 
         if(args[0].equalsIgnoreCase("role")) {
@@ -120,14 +123,17 @@ public class WelcomeCommand implements Command { // looking at this class... yea
                 msg.getTextChannel().sendMessage(embed).queue();
             } catch (SQLException ignored) {
             }
+            return;
         }
+
+        msg.getTextChannel().sendMessage(help).complete();
     }
 
     @Override
     public String getName() { return "welcome"; }
 
     @Override
-    public String getDescription() { return "welcome set channel | welcome message MESSAGE"; }
+    public String getDescription() { return "configure welcome messages/roles"; }
 
     @Override
     public String[] getAliases() { return new String[0]; }
