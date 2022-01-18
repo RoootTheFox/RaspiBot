@@ -107,7 +107,7 @@ public class WelcomeCommand implements Command { // looking at this class... yea
                 }
             }
 
-            String SQL_QUERY = "INSERT INTO server_data SET `server_id` = '"+msg.getGuild().getId()+"', `welcome_msg` = '"+text+"' ON DUPLICATE KEY UPDATE `server_id` = '"+msg.getGuild().getId()+"', `welcome_msg` = '"+text+"'";
+            String SQL_QUERY = "INSERT INTO server_data SET `server_id` = '"+msg.getGuild().getId()+"', `welcome_role` = '"+text+"' ON DUPLICATE KEY UPDATE `server_id` = '"+msg.getGuild().getId()+"', `welcome_role` = '"+text+"'";
             try {
                 Connection con = DataSource.getConnection();
                 PreparedStatement pst = con.prepareStatement(SQL_QUERY);
