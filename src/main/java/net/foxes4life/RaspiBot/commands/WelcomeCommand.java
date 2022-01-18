@@ -34,14 +34,15 @@ public class WelcomeCommand implements Command { // looking at this class... yea
                 Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                         .setTitle("Error!")
                         .setDescription("Could not set the Welcome Channel! Please tag a valid channel\n("+ Main.PREFIX+this.getName()+" set #channel") // Message
-                        .setColor(new Color(EmbedUtils.ERROR_COLOR)) // Color
-                        .setTimestamp(OffsetDateTime.now()) // Timestamp
-                        .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON) // Footer
+                        .setColor(new Color(EmbedUtils.ERROR_COLOR))
+                        .setTimestamp(OffsetDateTime.now())
+                        .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON)
 
                         .build()).build();
                 msg.getTextChannel().sendMessage(embed).queue();
                 return;
             }
+
             String SQL_QUERY = "INSERT INTO server_data SET `server_id` = '"+msg.getGuild().getId()+"', `welcome_channel` = '"+welcomeChannel.getId()+"' ON DUPLICATE KEY UPDATE `server_id` = '"+msg.getGuild().getId()+"', `welcome_channel` = '"+ welcomeChannel.getId()+"'";
             try {
                 Connection con = DataSource.getConnection();
@@ -50,9 +51,9 @@ public class WelcomeCommand implements Command { // looking at this class... yea
                 Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                         .setTitle("Success!")
                         .setDescription("The welcome message channel has been successfully set to <#"+welcomeChannel.getId()+">!") // Message
-                        .setColor(new Color(EmbedUtils.SUCCESS_COLOR)) // Color
-                        .setTimestamp(OffsetDateTime.now()) // Timestamp
-                        .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON) // Footer
+                        .setColor(new Color(EmbedUtils.SUCCESS_COLOR))
+                        .setTimestamp(OffsetDateTime.now())
+                        .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON)
 
                         .build()).build();
                 msg.getTextChannel().sendMessage(embed).queue();
@@ -70,10 +71,10 @@ public class WelcomeCommand implements Command { // looking at this class... yea
                 pst.executeQuery();
                 Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                         .setTitle("Success!")
-                        .setDescription("The welcome message has been successfully set to `"+text+"`!") // Message
-                        .setColor(new Color(0x00FF00)) // Color
-                        .setTimestamp(OffsetDateTime.now()) // Timestamp
-                        .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON) // Footer
+                        .setDescription("The welcome message has been successfully set to `"+text+"`!")
+                        .setColor(new Color(0x00FF00))
+                        .setTimestamp(OffsetDateTime.now())
+                        .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON)
 
                         .build()).build();
                 msg.getTextChannel().sendMessage(embed).queue();
@@ -84,7 +85,8 @@ public class WelcomeCommand implements Command { // looking at this class... yea
         if(args[0].equalsIgnoreCase("role")) {
             String[] a = Arrays.copyOfRange(args, 1, args.length);
             String text = String.join(" ", a);
-            Role role = msg.getMentionedRoles().get(0);
+            Role role = null;
+            if(!msg.getMentionedRoles().isEmpty()) role = msg.getMentionedRoles().get(0);
             if(role == null) {
                 role = guild.getRoleById(text);
 
@@ -92,9 +94,9 @@ public class WelcomeCommand implements Command { // looking at this class... yea
                     Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                             .setTitle("Error!")
                             .setDescription("Could not set the welcome role! Please tag a valid role\n("+ Main.PREFIX+this.getName()+" role #channel") // Message
-                            .setColor(new Color(EmbedUtils.ERROR_COLOR)) // Color
-                            .setTimestamp(OffsetDateTime.now()) // Timestamp
-                            .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON) // Footer
+                            .setColor(new Color(EmbedUtils.ERROR_COLOR))
+                            .setTimestamp(OffsetDateTime.now())
+                            .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON)
 
                             .build()).build();
                     msg.getTextChannel().sendMessage(embed).queue();
@@ -109,10 +111,10 @@ public class WelcomeCommand implements Command { // looking at this class... yea
                 pst.executeQuery();
                 Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
                         .setTitle("Success!")
-                        .setDescription("The welcome message has been successfully set to `"+text+"`!") // Message
-                        .setColor(new Color(0x00FF00)) // Color
-                        .setTimestamp(OffsetDateTime.now()) // Timestamp
-                        .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON) // Footer
+                        .setDescription("The welcome role has been successfully set to `"+role.getName()+"`!")
+                        .setColor(new Color(0x00FF00))
+                        .setTimestamp(OffsetDateTime.now())
+                        .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON)
 
                         .build()).build();
                 msg.getTextChannel().sendMessage(embed).queue();
