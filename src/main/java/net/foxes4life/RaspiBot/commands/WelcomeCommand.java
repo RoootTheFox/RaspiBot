@@ -1,5 +1,6 @@
 package net.foxes4life.RaspiBot.commands;
 
+import net.dv8tion.jda.api.entities.Role;
 import net.foxes4life.RaspiBot.Main;
 import net.foxes4life.RaspiBot.mysql.DataSource;
 import net.foxes4life.RaspiBot.stuff.Command;
@@ -19,7 +20,7 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 @SuppressWarnings("unused")
-public class WelcomeCommand implements Command {
+public class WelcomeCommand implements Command { // looking at this class... yeah i think i should just recode the bot
     @Override
     public void run(Message msg, String[] args, Guild guild) {
         if(args.length == 0) {
@@ -62,6 +63,45 @@ public class WelcomeCommand implements Command {
         if(args[0].equalsIgnoreCase("message")) {
             String[] a = Arrays.copyOfRange(args, 1, args.length);
             String text = String.join(" ", a);
+            String SQL_QUERY = "INSERT INTO server_data SET `server_id` = '"+msg.getGuild().getId()+"', `welcome_msg` = '"+text+"' ON DUPLICATE KEY UPDATE `server_id` = '"+msg.getGuild().getId()+"', `welcome_msg` = '"+text+"'";
+            try {
+                Connection con = DataSource.getConnection();
+                PreparedStatement pst = con.prepareStatement(SQL_QUERY);
+                pst.executeQuery();
+                Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
+                        .setTitle("Success!")
+                        .setDescription("The welcome message has been successfully set to `"+text+"`!") // Message
+                        .setColor(new Color(0x00FF00)) // Color
+                        .setTimestamp(OffsetDateTime.now()) // Timestamp
+                        .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON) // Footer
+
+                        .build()).build();
+                msg.getTextChannel().sendMessage(embed).queue();
+            } catch (SQLException ignored) {
+            }
+        }
+
+        if(args[0].equalsIgnoreCase("role")) {
+            String[] a = Arrays.copyOfRange(args, 1, args.length);
+            String text = String.join(" ", a);
+            Role role = msg.getMentionedRoles().get(0);
+            if(role == null) {
+                role = guild.getRoleById(text);
+
+                if(role == null) {
+                    Message embed = new MessageBuilder().setEmbeds(new EmbedBuilder()
+                            .setTitle("Error!")
+                            .setDescription("Could not set the welcome role! Please tag a valid role\n("+ Main.PREFIX+this.getName()+" role #channel") // Message
+                            .setColor(new Color(EmbedUtils.ERROR_COLOR)) // Color
+                            .setTimestamp(OffsetDateTime.now()) // Timestamp
+                            .setFooter(EmbedUtils.FOOTER_TEXT, EmbedUtils.FOOTER_ICON) // Footer
+
+                            .build()).build();
+                    msg.getTextChannel().sendMessage(embed).queue();
+                    return;
+                }
+            }
+
             String SQL_QUERY = "INSERT INTO server_data SET `server_id` = '"+msg.getGuild().getId()+"', `welcome_msg` = '"+text+"' ON DUPLICATE KEY UPDATE `server_id` = '"+msg.getGuild().getId()+"', `welcome_msg` = '"+text+"'";
             try {
                 Connection con = DataSource.getConnection();

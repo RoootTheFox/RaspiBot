@@ -1,5 +1,6 @@
 package net.foxes4life.RaspiBot.events;
 
+import net.dv8tion.jda.api.entities.Role;
 import net.foxes4life.RaspiBot.Main;
 import net.foxes4life.RaspiBot.mysql.DataSource;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -22,6 +23,13 @@ public class GuildMemberJoinEvent extends ListenerAdapter {
                 String welcomeChannelID = rs.getString("welcome_channel");
                 if(welcomeChannelID == null) return;
                 String welcome_msg = rs.getString("welcome_msg");
+                String welcome_role = rs.getString("welcome_role");
+                if(welcome_role != null) {
+                    Role role = event.getGuild().getRoleById(welcome_role);
+                    if(role != null) {
+                        event.getGuild().addRoleToMember(event.getMember(), role).complete();
+                    }
+                }
                 if(!(welcome_msg == null)) {
                     welcome_msg = welcome_msg
                             .replace("{server}", event.getGuild().getName())
