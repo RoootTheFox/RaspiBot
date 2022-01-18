@@ -21,8 +21,6 @@ public class GuildMemberJoinEvent extends ListenerAdapter {
              ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
                 String welcomeChannelID = rs.getString("welcome_channel");
-                if(welcomeChannelID == null) return;
-                String welcome_msg = rs.getString("welcome_msg");
                 String welcome_role = rs.getString("welcome_role");
                 if(welcome_role != null) {
                     Role role = event.getGuild().getRoleById(welcome_role);
@@ -30,6 +28,8 @@ public class GuildMemberJoinEvent extends ListenerAdapter {
                         event.getGuild().addRoleToMember(event.getMember(), role).complete();
                     }
                 }
+                if(welcomeChannelID == null) return;
+                String welcome_msg = rs.getString("welcome_msg");
                 if(!(welcome_msg == null)) {
                     welcome_msg = welcome_msg
                             .replace("{server}", event.getGuild().getName())
